@@ -100,8 +100,8 @@ meaning in this field.
 `laneId` is the discriminator. A lane export sends `<scope>/<lane>`. A main
 export sends an empty value.
 
-If you must change the webhook, delete it and create it again. An edit can
-drop the headers, and the delivery then returns 401.
+After you save the webhook, export a lane. Then read the delivery log. A
+correct delivery returns 204.
 
 ## Run the four flows
 
@@ -220,7 +220,7 @@ Delete this file if you do not want the behavior.
 
 | Symptom | Cause | Repair |
 | --- | --- | --- |
-| No run starts after an export. | The webhook delivery failed. | Read the delivery log on bit.cloud. A 401 means the `Authorization` header is wrong or absent. Delete the webhook and create it again, because an edit can drop the headers. A 404 means the URL names the wrong repository. |
+| No run starts after an export. | The webhook delivery failed. | Read the delivery log on bit.cloud. A 401 means the `Authorization` header is wrong or absent. Check the header, then send a test delivery. A 404 means the URL names the wrong repository. |
 | A run starts, but no pull request appears. | The repository forbids the write. | Turn on **Allow GitHub Actions to create and approve pull requests**. Confirm that the workflow declares `pull-requests: write`. |
 | The run halts, and the pull request gets the label `bit-sync-conflict`. | Git and the lane changed the same line. | Read the comment on the pull request. Resolve the conflict on the branch, push the result, then remove the label. The sync stays paused for that lane while the label is present. |
 | The run halts with a shallow-clone message. | `actions/checkout` fetched one commit. | Keep `fetch-depth: 0` in the checkout step. The reconciler reads the full history, so a shallow clone stops it before any write. |
