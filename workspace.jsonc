@@ -1,0 +1,43 @@
+/**
+ * Bit workspace configuration for the bit-git-sync example.
+ * Reference: https://bit.dev/reference/workspace/workspace-json
+ **/
+{
+  "$schema": "https://static.bit.dev/teambit/schemas/schema.json",
+  "teambit.workspace/workspace": {
+    "name": "bit-git-sync-example",
+    "icon": "https://static.bit.dev/brands/bit-logo-min.png",
+    "defaultDirectory": "components/{name}",
+    /**
+     * `setup.sh` replaces this placeholder with the scope that you pass to it.
+     * Example: ./setup.sh acme.shop
+     **/
+    "defaultScope": "CHANGE-ME.CHANGE-ME"
+  },
+  "teambit.dependencies/dependency-resolver": {
+    "policy": {
+      "dependencies": {},
+      "peerDependencies": {}
+    }
+  },
+  /**
+   * The component uses the core Node env. A core env needs no install step,
+   * so a fresh clone has no env-resolution problem.
+   **/
+  "teambit.workspace/variants": {
+    "components/greeting": {
+      "teambit.harmony/node": {}
+    }
+  },
+  /**
+   * The sync configuration that the `bit ci sync` command and the
+   * bit-git-sync action both read. The README explains each key.
+   **/
+  "teambit.git/ci": {
+    "sync": {
+      "lanes": ["*"],
+      "mainSync": "pr",
+      "onConflict": "halt"
+    }
+  }
+}
