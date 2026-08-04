@@ -14,6 +14,14 @@
      **/
     "defaultScope": "CHANGE-ME.CHANGE-ME"
   },
+  /**
+   * the bit version this workspace requires. `bit-tasks/init` reads it and
+   * installs exactly this version. Without it, the runner gets the latest
+   * stable release, and that release has no `bit ci sync` yet.
+   **/
+  "teambit.harmony/bit": {
+    "engine": "2.0.65"
+  },
   "teambit.dependencies/dependency-resolver": {
     "policy": {
       "dependencies": {},
