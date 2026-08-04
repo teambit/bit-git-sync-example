@@ -20,7 +20,9 @@ repository.
 The four flows use two workflows. `bit-sync.yml` runs flows 1, 2 and 4.
 `bit-release.yml` runs flow 3.
 
-## Prerequisite: a bit version that has `bit ci sync`
+## Prerequisites
+
+### A bit version that has `bit ci sync`
 
 The `bit ci pr` and `bit ci merge` commands are in every current release. The `bit ci sync` command
 is not: it arrives with [teambit/bit#10541](https://github.com/teambit/bit/pull/10541). Bit 2.0.63
@@ -32,7 +34,7 @@ requirement. Until the pull request is in a release, install a build that contai
 [action README](https://github.com/teambit/bit-git-sync#prerequisite-a-bit-version-that-has-bit-ci-sync)
 holds the exact steps.
 
-## Prerequisites
+### What you need
 
 | Item | Reason |
 | --- | --- |
