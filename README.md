@@ -22,17 +22,14 @@ The four flows use two workflows. `bit-sync.yml` runs flows 1, 2 and 4.
 
 ## Prerequisites
 
-### A bit version that has `bit ci sync`
+### bit 2.0.65 or later
 
-The `bit ci pr` and `bit ci merge` commands are in every current release. The `bit ci sync` command
-is not: it arrives with [teambit/bit#10541](https://github.com/teambit/bit/pull/10541). Bit 2.0.63
-does not have the command, so the sync flows below cannot run on it yet.
+The `bit ci sync` command arrived in bit **2.0.65**. Every earlier release has `bit ci pr` and
+`bit ci merge`, but not `bit ci sync`. The workflows use `bit-tasks/init@v2`, which installs the
+newest release, so they need no version pin.
 
 If a workflow runs a sync on a bit version without the command, the action stops and names the
-requirement. Until the pull request is in a release, install a build that contains it and set
-`skip-bit-install: 'true'` on `bit-tasks/init`. The
-[action README](https://github.com/teambit/bit-git-sync#prerequisite-a-bit-version-that-has-bit-ci-sync)
-holds the exact steps.
+requirement.
 
 ### What you need
 
