@@ -53,9 +53,9 @@ Install the Bit CLI with `npx @teambit/bvm install`.
 ./setup.sh acme.shop
 ```
 
-The script does four things. It writes your scope into `workspace.jsonc`. It
-runs `bit install`. It tracks the `greeting` component. It prints the
-workspace status.
+The script does five things. It writes your scope into `workspace.jsonc`. It
+initializes the workspace with `bit init`. It runs `bit install`. It tracks
+the `greeting` component. It prints the workspace status.
 
 The script rejects a value that is not a scope id. A scope id has two parts
 and one dot, for example `acme.shop`.

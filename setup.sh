@@ -31,7 +31,7 @@ if ! command -v bit > /dev/null 2>&1; then
   exit 1
 fi
 
-echo "==> Step 1 of 4: write the default scope"
+echo "==> Step 1 of 5: write the default scope"
 if grep -q "\"defaultScope\": \"$PLACEHOLDER\"" workspace.jsonc; then
   sed "s|\"defaultScope\": \"$PLACEHOLDER\"|\"defaultScope\": \"$SCOPE\"|" workspace.jsonc > workspace.jsonc.new
   mv workspace.jsonc.new workspace.jsonc
@@ -40,10 +40,19 @@ else
   echo 'The placeholder is absent. workspace.jsonc keeps its current scope.'
 fi
 
-echo "==> Step 2 of 4: install the dependencies"
+echo "==> Step 2 of 5: initialize the workspace"
+if [ -f .bitmap ]; then
+  echo 'The workspace has a .bitmap file already. The step is not necessary.'
+else
+  # A fresh clone has workspace.jsonc, but no .bitmap and no local scope.
+  # `bit install` refuses to run before `bit init` creates them.
+  bit init
+fi
+
+echo "==> Step 3 of 5: install the dependencies"
 bit install
 
-echo "==> Step 3 of 4: track the component"
+echo "==> Step 4 of 5: track the component"
 if [ -f .bitmap ] && grep -q "\"$COMPONENT_ID\"" .bitmap; then
   echo "Bit tracks $COMPONENT_ID already."
 else
@@ -51,7 +60,7 @@ else
   echo "Bit now tracks $COMPONENT_ID."
 fi
 
-echo "==> Step 4 of 4: show the workspace status"
+echo "==> Step 5 of 5: show the workspace status"
 bit status
 
 cat <<'CHECKLIST'
