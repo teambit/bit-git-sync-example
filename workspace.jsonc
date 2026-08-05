@@ -1,8 +1,7 @@
 /**
  * Bit workspace configuration for the bit-git-sync example.
  * Reference: https://bit.dev/reference/workspace/workspace-json
- **/
-{
+ **/{
   "$schema": "https://static.bit.dev/teambit/schemas/schema.json",
   "teambit.workspace/workspace": {
     "name": "bit-git-sync-example",
@@ -12,7 +11,7 @@
      * `setup.sh` replaces this placeholder with the scope that you pass to it.
      * Example: ./setup.sh acme.shop
      **/
-    "defaultScope": "CHANGE-ME.CHANGE-ME"
+    "defaultScope": "teambit.api-reference"
   },
   /**
    * the bit version this workspace requires. `bit-tasks/init` reads it and
@@ -43,7 +42,9 @@
    **/
   "teambit.git/ci": {
     "sync": {
-      "lanes": ["*"],
+      "lanes": [
+        "*"
+      ],
       "mainSync": "pr",
       "onConflict": "halt"
     }
