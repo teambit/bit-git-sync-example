@@ -14,9 +14,9 @@
     "defaultScope": "teambit.api-reference"
   },
   /**
-   * the bit version this workspace requires. `bit-tasks/init` reads it and
-   * installs exactly this version. Without it, the runner gets the latest
-   * stable release, and that release has no `bit ci sync` yet.
+   * the bit version that this workspace requires. `bit-tasks/init` reads it
+   * and installs this version. Without it, the runner gets the latest stable
+   * release. That release does not have `bit ci sync`.
    **/
   "teambit.harmony/bit": {
     "engine": "2.0.65"
