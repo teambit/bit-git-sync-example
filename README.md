@@ -57,7 +57,7 @@ Install the Bit CLI with `npx @teambit/bvm install`.
 
 The script does five things. It writes your scope into `workspace.jsonc`. It
 initializes the workspace with `bit init`. It runs `bit install`. It tracks
-the `greeting` component. It prints the workspace status.
+the `utils/schema-node-label` component. It prints the workspace status.
 
 The script rejects a value that is not a scope id. A scope id has two parts
 and one dot, for example `acme.shop`.
@@ -121,8 +121,8 @@ correct delivery returns 204.
 ### Flow 1: a lane becomes a branch and a pull request
 
 1. Create a lane: `bit lane create hello`.
-2. Change the text in `components/greeting/greeting.ts`.
-3. Snap the change: `bit snap -m "change the greeting"`.
+2. Change the label format in `components/utils/schema-node-label/schema-node-label.ts`.
+3. Snap the change: `bit snap -m "change the label format"`.
 4. Export the lane: `bit export`.
 
 **Expected result:** the webhook starts the `bit-sync` workflow. The run
@@ -133,7 +133,7 @@ creates the branch `hello`. The run opens a pull request from `hello` into
 
 1. Fetch the new branch: `git fetch origin`.
 2. Check it out: `git checkout hello`.
-3. Change the text in `components/greeting/greeting.ts` again.
+3. Change the label format in `components/utils/schema-node-label/schema-node-label.ts` again.
 4. Commit the change and push it.
 
 **Expected result:** the push starts the `bit-sync` workflow. The run snaps the
@@ -157,7 +157,7 @@ describe merged state only.
 ### Flow 4: main-scope drift reaches the default branch
 
 1. Switch to main: `bit switch main`.
-2. Snap a change: `bit snap -m "change the greeting on main"`.
+2. Snap a change: `bit snap -m "change the label format on main"`.
 3. Export the change: `bit export`.
 
 **Expected result:** the webhook sends an empty `laneId`, so the run reconciles
@@ -244,7 +244,7 @@ Delete this file if you do not want the behavior.
 | Path | Purpose |
 | --- | --- |
 | `workspace.jsonc` | The workspace, the env and the sync configuration. |
-| `components/greeting/` | The example component. |
+| `components/utils/schema-node-label/` | The example component. |
 | `setup.sh` | Writes your scope, installs, tracks the component. |
 | `.github/workflows/bit-sync.yml` | Flows 1, 2 and 4. |
 | `.github/workflows/bit-release.yml` | Flow 3. |

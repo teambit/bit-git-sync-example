@@ -4,8 +4,8 @@
 set -eu
 
 PLACEHOLDER='CHANGE-ME.CHANGE-ME'
-COMPONENT_DIR='components/greeting'
-COMPONENT_ID='greeting'
+COMPONENT_DIR='components/utils/schema-node-label'
+COMPONENT_ID='utils/schema-node-label'
 
 cd "$(dirname "$0")"
 

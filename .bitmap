@@ -9,13 +9,12 @@
  */
 
 {
-    "greeting": {
-        "name": "greeting",
-        "scope": "",
-        "version": "",
-        "defaultScope": "teambit.api-reference",
+    "utils/schema-node-label": {
+        "name": "utils/schema-node-label",
+        "scope": "teambit.api-reference",
+        "version": "0.0.1",
         "mainFile": "index.ts",
-        "rootDir": "components/greeting"
+        "rootDir": "components/utils/schema-node-label"
     },
     "$schema-version": "17.0.0"
 }
