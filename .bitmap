@@ -9,6 +9,14 @@
  */
 
 {
+    "utils/node-kind-icon": {
+        "name": "utils/node-kind-icon",
+        "scope": "",
+        "version": "",
+        "defaultScope": "teambit.api-reference",
+        "mainFile": "index.ts",
+        "rootDir": "components/utils/node-kind-icon"
+    },
     "utils/schema-node-label": {
         "name": "utils/schema-node-label",
         "scope": "teambit.api-reference",
