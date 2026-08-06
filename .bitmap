@@ -12,9 +12,16 @@
     "utils/schema-node-label": {
         "name": "utils/schema-node-label",
         "scope": "teambit.api-reference",
-        "version": "0.0.1",
+        "version": "837b85f83e2db7efc6db0ef41e925e92915ef6ba",
         "mainFile": "index.ts",
         "rootDir": "components/utils/schema-node-label"
     },
-    "$schema-version": "17.0.0"
+    "$schema-version": "17.0.0",
+    "_bit_lane": {
+        "id": {
+            "name": "webhook-test-2",
+            "scope": "teambit.api-reference"
+        },
+        "exported": true
+    }
 }

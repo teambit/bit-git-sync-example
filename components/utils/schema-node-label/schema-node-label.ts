@@ -10,3 +10,5 @@ export function schemaNodeLabel(nodeId: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
+
+export const webhookTest2 = 'delivery-check-after-recreate';
