@@ -289,13 +289,6 @@
         "mainFile": "index.ts",
         "rootDir": "components/utils/group-schema-node-by-signature"
     },
-    "utils/schema-node-label": {
-        "name": "utils/schema-node-label",
-        "scope": "teambit.api-reference",
-        "version": "0.0.1",
-        "mainFile": "index.ts",
-        "rootDir": "components/utils/schema-node-label"
-    },
     "utils/schema-node-signature-transform": {
         "name": "utils/schema-node-signature-transform",
         "scope": "teambit.api-reference",
