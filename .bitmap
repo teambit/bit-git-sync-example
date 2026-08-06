@@ -292,7 +292,7 @@
     "utils/schema-node-label": {
         "name": "utils/schema-node-label",
         "scope": "teambit.api-reference",
-        "version": "0.0.1",
+        "version": "be536b713752b43395881c7b0376fb0e37845815",
         "mainFile": "index.ts",
         "rootDir": "components/utils/schema-node-label"
     },
@@ -310,5 +310,12 @@
         "mainFile": "index.ts",
         "rootDir": "components/utils/sort-api-nodes"
     },
-    "$schema-version": "17.0.0"
+    "$schema-version": "17.0.0",
+    "_bit_lane": {
+        "id": {
+            "name": "delete-tests",
+            "scope": "teambit.api-reference"
+        },
+        "exported": true
+    }
 }
