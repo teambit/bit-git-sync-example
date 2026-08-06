@@ -24,14 +24,12 @@ The four flows use two workflows. `bit-sync.yml` runs flows 1, 2 and 4.
 
 ### bit 2.0.69 or later
 
-The `bit ci sync` command arrived in bit **2.0.65**. Every earlier release has `bit ci pr` and
-`bit ci merge`, but not `bit ci sync`. The first lane export of a new component needs the fix
-in bit **2.0.69**. The `workspace.jsonc` of this repository pins the version
-for the workflows. `bit-tasks/init@v2` reads the `engine` value in `teambit.harmony/bit` and
-installs that version. Without the pin, the runner gets the latest stable release. That release
-does not have `bit ci sync`.
+Use bit **2.0.69** or later. The `workspace.jsonc` of this repository pins the version for the
+workflows. `bit-tasks/init@v2` reads the `engine` value in `teambit.harmony/bit` and installs
+that version. Without the pin, the runner gets the latest stable release, and that release does
+not have `bit ci sync`.
 
-If a workflow runs a sync on a bit version without the command, the action stops and names the
+If a workflow runs on a bit version without the command, the action stops and names the
 requirement.
 
 ### What you need
@@ -63,9 +61,9 @@ the `utils/schema-node-label` component. It prints the workspace status.
 The script rejects a value that is not a scope id. A scope id has two parts
 and one dot, for example `acme.shop`.
 
-The repository ships `"defaultScope": "CHANGE-ME.CHANGE-ME"`. The script
-replaces that placeholder. Commit the changed `workspace.jsonc` and the new
-`.bitmap`.
+The repository is configured to the `teambit.api-reference` scope. The script
+writes your scope in its place. Commit the changed `workspace.jsonc` and the
+new `.bitmap`.
 
 ## Manual steps
 

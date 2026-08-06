@@ -3,7 +3,6 @@
 # Usage: ./setup.sh <your-org>.<your-scope>
 set -eu
 
-PLACEHOLDER='CHANGE-ME.CHANGE-ME'
 COMPONENT_DIR='components/utils/schema-node-label'
 COMPONENT_ID='utils/schema-node-label'
 
@@ -32,12 +31,12 @@ if ! command -v bit > /dev/null 2>&1; then
 fi
 
 echo "==> Step 1 of 5: write the default scope"
-if grep -q "\"defaultScope\": \"$PLACEHOLDER\"" workspace.jsonc; then
-  sed "s|\"defaultScope\": \"$PLACEHOLDER\"|\"defaultScope\": \"$SCOPE\"|" workspace.jsonc > workspace.jsonc.new
+if grep -q "\"defaultScope\": \"$SCOPE\"" workspace.jsonc; then
+  echo "workspace.jsonc uses the scope $SCOPE already."
+else
+  sed "s|\"defaultScope\": \"[^\"]*\"|\"defaultScope\": \"$SCOPE\"|" workspace.jsonc > workspace.jsonc.new
   mv workspace.jsonc.new workspace.jsonc
   echo "workspace.jsonc now uses the scope $SCOPE."
-else
-  echo 'The placeholder is absent. workspace.jsonc keeps its current scope.'
 fi
 
 echo "==> Step 2 of 5: initialize the workspace"
