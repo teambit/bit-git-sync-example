@@ -11,4 +11,4 @@ export function schemaNodeLabel(nodeId: string): string {
     .join(' ');
 }
 
-export const deleteTest = 'lane-for-deletion-cases';
+export const deleteTest = 'unexported-dev-work';
