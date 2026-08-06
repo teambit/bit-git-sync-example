@@ -22,10 +22,11 @@ The four flows use two workflows. `bit-sync.yml` runs flows 1, 2 and 4.
 
 ## Prerequisites
 
-### bit 2.0.65 or later
+### bit 2.0.69 or later
 
 The `bit ci sync` command arrived in bit **2.0.65**. Every earlier release has `bit ci pr` and
-`bit ci merge`, but not `bit ci sync`. The `workspace.jsonc` of this repository pins the version
+`bit ci merge`, but not `bit ci sync`. The first lane export of a new component needs the fix
+in bit **2.0.69**. The `workspace.jsonc` of this repository pins the version
 for the workflows. `bit-tasks/init@v2` reads the `engine` value in `teambit.harmony/bit` and
 installs that version. Without the pin, the runner gets the latest stable release. That release
 does not have `bit ci sync`.

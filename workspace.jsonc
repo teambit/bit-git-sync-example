@@ -19,7 +19,7 @@
    * release. That release does not have `bit ci sync`.
    **/
   "teambit.harmony/bit": {
-    "engine": "2.0.65"
+    "engine": "2.0.69"
   },
   "teambit.dependencies/dependency-resolver": {
     "policy": {
