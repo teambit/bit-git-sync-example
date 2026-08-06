@@ -11,4 +11,4 @@ export function schemaNodeLabel(nodeId: string): string {
     .join(' ');
 }
 
-export const flowTest = 'lane-side-original';
+export const flowTest = 'git-side-edit';
