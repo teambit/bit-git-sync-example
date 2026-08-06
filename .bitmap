@@ -11,11 +11,12 @@
 {
     "utils/node-kind-icon": {
         "name": "utils/node-kind-icon",
-        "scope": "",
-        "version": "",
-        "defaultScope": "teambit.api-reference",
+        "scope": "teambit.api-reference",
+        "version": "5d4055d9eef62f941fd5e06231e2c9f954deeedf",
         "mainFile": "index.ts",
-        "rootDir": "components/utils/node-kind-icon"
+        "rootDir": "components/utils/node-kind-icon",
+        "onLanesOnly": true,
+        "isAvailableOnCurrentLane": true
     },
     "utils/schema-node-label": {
         "name": "utils/schema-node-label",
@@ -24,5 +25,12 @@
         "mainFile": "index.ts",
         "rootDir": "components/utils/schema-node-label"
     },
-    "$schema-version": "17.0.0"
+    "$schema-version": "17.0.0",
+    "_bit_lane": {
+        "id": {
+            "name": "first-lane-export-proof",
+            "scope": "teambit.api-reference"
+        },
+        "exported": true
+    }
 }
