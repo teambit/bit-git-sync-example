@@ -12,252 +12,252 @@
     "api-reference": {
         "name": "api-reference",
         "scope": "teambit.api-reference",
-        "version": "1.0.1096",
+        "version": "b1f4a4c85abdc79b3331cc6bf7a5314d216b8b0d",
         "mainFile": "index.ts",
         "rootDir": "components/api-reference"
     },
     "explorer/api-reference-explorer": {
         "name": "explorer/api-reference-explorer",
         "scope": "teambit.api-reference",
-        "version": "0.0.39",
+        "version": "5c259466651d88e4d9237df084abe26b4845478f",
         "mainFile": "index.ts",
         "rootDir": "components/explorer/api-reference-explorer"
     },
     "hooks/use-api": {
         "name": "hooks/use-api",
         "scope": "teambit.api-reference",
-        "version": "0.0.57",
+        "version": "e638599619a7471a574a2e4c996084341aff98c5",
         "mainFile": "index.ts",
         "rootDir": "components/hooks/use-api"
     },
     "hooks/use-api-ref-url": {
         "name": "hooks/use-api-ref-url",
         "scope": "teambit.api-reference",
-        "version": "0.0.25",
+        "version": "c281678f1ad9a7632c337b229fa2c2d450c26288",
         "mainFile": "index.ts",
         "rootDir": "components/hooks/use-api-ref-url"
     },
     "hooks/use-api-renderers": {
         "name": "hooks/use-api-renderers",
         "scope": "teambit.api-reference",
-        "version": "0.0.37",
+        "version": "367252e2a486369308c4f4fa0980b06bff50f594",
         "mainFile": "index.ts",
         "rootDir": "components/hooks/use-api-renderers"
     },
     "hooks/use-schema": {
         "name": "hooks/use-schema",
         "scope": "teambit.api-reference",
-        "version": "0.0.35",
+        "version": "d4ce6750f49c0335c876c92b65619cda152e05c2",
         "mainFile": "index.ts",
         "rootDir": "components/hooks/use-schema"
     },
     "models/api-node-renderer": {
         "name": "models/api-node-renderer",
         "scope": "teambit.api-reference",
-        "version": "0.0.53",
+        "version": "ab9de45c765c8c86bc014b4831fb0cb719edadbe",
         "mainFile": "index.ts",
         "rootDir": "components/models/api-node-renderer"
     },
     "models/api-reference-model": {
         "name": "models/api-reference-model",
         "scope": "teambit.api-reference",
-        "version": "0.0.53",
+        "version": "3d701626f806567b11aa3a79b91da39029469822",
         "mainFile": "index.ts",
         "rootDir": "components/models/api-reference-model"
     },
     "overview/api-reference-table-of-contents": {
         "name": "overview/api-reference-table-of-contents",
         "scope": "teambit.api-reference",
-        "version": "0.0.41",
+        "version": "b368bf23ad4d3dfd44c998a33b09132fd641e6e1",
         "mainFile": "index.ts",
         "rootDir": "components/overview/api-reference-table-of-contents"
     },
     "overview/renderers/grouped-schema-nodes-overview-summary": {
         "name": "overview/renderers/grouped-schema-nodes-overview-summary",
         "scope": "teambit.api-reference",
-        "version": "0.0.70",
+        "version": "408c5db0037317454821988d13916ae26523ace0",
         "mainFile": "index.ts",
         "rootDir": "components/overview/renderers/grouped-schema-nodes-overview-summary"
     },
     "renderers/api-node-details": {
         "name": "renderers/api-node-details",
         "scope": "teambit.api-reference",
-        "version": "0.0.84",
+        "version": "c42112ad485e4d12ef3fa8b91e1aa2e6c1dbb62b",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/api-node-details"
     },
     "renderers/class": {
         "name": "renderers/class",
         "scope": "teambit.api-reference",
-        "version": "0.0.86",
+        "version": "6582720131198bf3d4220b479a3f71f06adbda5c",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/class"
     },
     "renderers/decorator": {
         "name": "renderers/decorator",
         "scope": "teambit.api-reference",
-        "version": "0.0.40",
+        "version": "9c4e4e9b4f4d7da80e5e60bd997f2f1affd9e0c9",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/decorator"
     },
     "renderers/default-node-renderers": {
         "name": "renderers/default-node-renderers",
         "scope": "teambit.api-reference",
-        "version": "0.0.23",
+        "version": "6a456060398bdda0c1c96b643ffecbbbc42b4a88",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/default-node-renderers"
     },
     "renderers/enum": {
         "name": "renderers/enum",
         "scope": "teambit.api-reference",
-        "version": "0.0.84",
+        "version": "a802767749513ca258428c854687351c15d20d34",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/enum"
     },
     "renderers/function": {
         "name": "renderers/function",
         "scope": "teambit.api-reference",
-        "version": "0.0.88",
+        "version": "b50c708809988ba7c5625cca9c7f91ec5fc1917b",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/function"
     },
     "renderers/grouped-schema-nodes-summary": {
         "name": "renderers/grouped-schema-nodes-summary",
         "scope": "teambit.api-reference",
-        "version": "0.0.82",
+        "version": "df7c23151574d2726303207c67c5bca9b9574fb6",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/grouped-schema-nodes-summary"
     },
     "renderers/inference-type": {
         "name": "renderers/inference-type",
         "scope": "teambit.api-reference",
-        "version": "0.0.66",
+        "version": "ee287c95e763831e6a2f7cd136b36c4307480064",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/inference-type"
     },
     "renderers/interface": {
         "name": "renderers/interface",
         "scope": "teambit.api-reference",
-        "version": "0.0.84",
+        "version": "0903a0f8e6d455ddeb8c2c1ebf2ea88162b93be3",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/interface"
     },
     "renderers/parameter": {
         "name": "renderers/parameter",
         "scope": "teambit.api-reference",
-        "version": "0.0.69",
+        "version": "af497706817c1a69454938c42272435c6232abad",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/parameter"
     },
     "renderers/react": {
         "name": "renderers/react",
         "scope": "teambit.api-reference",
-        "version": "0.0.69",
+        "version": "d55dd944286efd85460eaebfaebb13dd7b64ca95",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/react"
     },
     "renderers/schema-node-member-summary": {
         "name": "renderers/schema-node-member-summary",
         "scope": "teambit.api-reference",
-        "version": "0.0.80",
+        "version": "566b261a3608339927a03382c7b8d6096a1b1594",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/schema-node-member-summary"
     },
     "renderers/schema-nodes-index": {
         "name": "renderers/schema-nodes-index",
         "scope": "teambit.api-reference",
-        "version": "0.0.72",
+        "version": "20312de19bb73203c177c014706443f70aef1f62",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/schema-nodes-index"
     },
     "renderers/this": {
         "name": "renderers/this",
         "scope": "teambit.api-reference",
-        "version": "0.0.71",
+        "version": "ef05db19d1c01245a8176b5b8878e487d5c7ecc2",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/this"
     },
     "renderers/tuple-type": {
         "name": "renderers/tuple-type",
         "scope": "teambit.api-reference",
-        "version": "0.0.34",
+        "version": "34cd26aa3e163748be143f51bf7a858e4e3eaf9c",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/tuple-type"
     },
     "renderers/type": {
         "name": "renderers/type",
         "scope": "teambit.api-reference",
-        "version": "0.0.82",
+        "version": "65223635f8cbf930ee218c106b7204a4835a22d7",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/type"
     },
     "renderers/type-array": {
         "name": "renderers/type-array",
         "scope": "teambit.api-reference",
-        "version": "0.0.55",
+        "version": "716342f53d6a815be1e52d00e40c2f7d11576006",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/type-array"
     },
     "renderers/type-intersection": {
         "name": "renderers/type-intersection",
         "scope": "teambit.api-reference",
-        "version": "0.0.55",
+        "version": "afd8f825642ac86cbf2abed6b000d81355c9ff07",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/type-intersection"
     },
     "renderers/type-literal": {
         "name": "renderers/type-literal",
         "scope": "teambit.api-reference",
-        "version": "0.0.75",
+        "version": "480f79aec3a64c217607d766e56fb3005e989f2a",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/type-literal"
     },
     "renderers/type-ref": {
         "name": "renderers/type-ref",
         "scope": "teambit.api-reference",
-        "version": "0.0.101",
+        "version": "9db8bb53cb7423d6d0dbfa8c82422142e2036bbd",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/type-ref"
     },
     "renderers/type-union": {
         "name": "renderers/type-union",
         "scope": "teambit.api-reference",
-        "version": "0.0.55",
+        "version": "091eba95c9ee9ca35cd4f0e2bf06f13d98057097",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/type-union"
     },
     "renderers/unresolved": {
         "name": "renderers/unresolved",
         "scope": "teambit.api-reference",
-        "version": "0.0.82",
+        "version": "9a8123c63caf8798c5541ec534110dec173aa48b",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/unresolved"
     },
     "renderers/variable": {
         "name": "renderers/variable",
         "scope": "teambit.api-reference",
-        "version": "0.0.82",
+        "version": "7c773a529325d28fe7d0a0742a458b5c3df2736c",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/variable"
     },
     "sections/api-reference-page": {
         "name": "sections/api-reference-page",
         "scope": "teambit.api-reference",
-        "version": "0.0.120",
+        "version": "3ce8b3aaa9ae36606de960e196e6e42cccc79186",
         "mainFile": "index.ts",
         "rootDir": "components/sections/api-reference-page"
     },
     "sections/api-reference-section": {
         "name": "sections/api-reference-section",
         "scope": "teambit.api-reference",
-        "version": "0.0.16",
+        "version": "4d81216c04b34bee50bf2e4c57829e7da35c9c17",
         "mainFile": "index.ts",
         "rootDir": "components/sections/api-reference-section"
     },
     "tagged-exports": {
         "name": "tagged-exports",
         "scope": "teambit.api-reference",
-        "version": "0.0.53",
+        "version": "c6515dc2a6798ba3eb22d8a44901dda8e6a51777",
         "mainFile": "index.ts",
         "rootDir": "components/tagged-exports"
     },
@@ -292,7 +292,7 @@
     "utils/schema-node-label": {
         "name": "utils/schema-node-label",
         "scope": "teambit.api-reference",
-        "version": "0.0.3",
+        "version": "4b2b172a7d331c531e691806f6a2fbb654683f9d",
         "mainFile": "index.ts",
         "rootDir": "components/utils/schema-node-label"
     },
@@ -306,9 +306,16 @@
     "utils/sort-api-nodes": {
         "name": "utils/sort-api-nodes",
         "scope": "teambit.api-reference",
-        "version": "0.0.53",
+        "version": "37326341968844499c09626e850378002d39ba1c",
         "mainFile": "index.ts",
         "rootDir": "components/utils/sort-api-nodes"
     },
-    "$schema-version": "17.0.0"
+    "$schema-version": "17.0.0",
+    "_bit_lane": {
+        "id": {
+            "name": "demo-e2e-git-first",
+            "scope": "teambit.api-reference"
+        },
+        "exported": true
+    }
 }
