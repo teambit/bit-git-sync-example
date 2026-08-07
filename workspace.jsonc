@@ -40,6 +40,9 @@
    * The sync configuration that the `bit ci sync` command and the
    * bit-git-sync action both read. The README explains each key.
    **/
+  "teambit.component/issues": {
+    "ignoreIssues": ["CircularDependencies"]
+  },
   "teambit.git/ci": {
     "sync": {
       "lanes": [
