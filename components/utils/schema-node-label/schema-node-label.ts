@@ -10,3 +10,5 @@ export function schemaNodeLabel(nodeId: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 }
+
+// demo-e2e-diverged: cloud-side marker, independent of the git-side edit.
