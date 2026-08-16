@@ -12,7 +12,7 @@
     "api-reference": {
         "name": "api-reference",
         "scope": "teambit.api-reference",
-        "version": "1.0.1105",
+        "version": "1.0.1106",
         "mainFile": "index.ts",
         "rootDir": "components/api-reference"
     },
