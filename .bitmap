@@ -159,8 +159,8 @@
     "renderers/schema-node-member-summary": {
         "name": "renderers/schema-node-member-summary",
         "scope": "teambit.api-reference",
-        "version": "0.0.80",
-        "mainFile": "index.ts",
+        "version": "0.0.0-75238957ce4bc43dee7758156dde5bc3a343e70d",
+        "mainFile": "dist/index.d.ts",
         "rootDir": "components/renderers/schema-node-member-summary"
     },
     "renderers/schema-nodes-index": {
