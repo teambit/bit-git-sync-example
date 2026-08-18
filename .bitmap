@@ -12,7 +12,7 @@
     "api-reference": {
         "name": "api-reference",
         "scope": "teambit.api-reference",
-        "version": "1.0.1096",
+        "version": "1.0.1109",
         "mainFile": "index.ts",
         "rootDir": "components/api-reference"
     },
@@ -75,7 +75,7 @@
     "overview/renderers/grouped-schema-nodes-overview-summary": {
         "name": "overview/renderers/grouped-schema-nodes-overview-summary",
         "scope": "teambit.api-reference",
-        "version": "0.0.70",
+        "version": "4f2f5dab18b40f9cbee36adfbc41abadb9fc78ea",
         "mainFile": "index.ts",
         "rootDir": "components/overview/renderers/grouped-schema-nodes-overview-summary"
     },
@@ -159,7 +159,7 @@
     "renderers/schema-node-member-summary": {
         "name": "renderers/schema-node-member-summary",
         "scope": "teambit.api-reference",
-        "version": "0.0.80",
+        "version": "f28fbb975cd7ad60d7bcefcfd750c554aeaba4b0",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/schema-node-member-summary"
     },
@@ -310,5 +310,12 @@
         "mainFile": "index.ts",
         "rootDir": "components/utils/sort-api-nodes"
     },
-    "$schema-version": "17.0.0"
+    "$schema-version": "17.0.0",
+    "_bit_lane": {
+        "id": {
+            "name": "fix-syntax-highlighter-root-import",
+            "scope": "teambit.api-reference"
+        },
+        "exported": true
+    }
 }
