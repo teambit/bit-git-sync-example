@@ -75,7 +75,7 @@
     "overview/renderers/grouped-schema-nodes-overview-summary": {
         "name": "overview/renderers/grouped-schema-nodes-overview-summary",
         "scope": "teambit.api-reference",
-        "version": "1e9ff60d93ec46cffc7e39a949e5800835a4677d",
+        "version": "25921e623967a2c8757830e1e84aa9d0d49c7e46",
         "mainFile": "index.ts",
         "rootDir": "components/overview/renderers/grouped-schema-nodes-overview-summary"
     },
@@ -159,7 +159,7 @@
     "renderers/schema-node-member-summary": {
         "name": "renderers/schema-node-member-summary",
         "scope": "teambit.api-reference",
-        "version": "b22d47973a2558a873ec6a34b033691a73ddbf41",
+        "version": "75238957ce4bc43dee7758156dde5bc3a343e70d",
         "mainFile": "index.ts",
         "rootDir": "components/renderers/schema-node-member-summary"
     },
