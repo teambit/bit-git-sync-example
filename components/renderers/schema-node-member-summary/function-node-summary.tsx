@@ -1,6 +1,15 @@
 import type { HTMLAttributes } from 'react';
 import React, { useMemo } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+// deep import on purpose: the package root re-exports `default-highlight` (highlight.js with every
+// language) and `prism` (refractor with every language) alongside the light builds, so importing
+// anything from the root pulls ~2.3 MB into every consumer's bundle.
+import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/prism-light';
+import tsSyntax from 'react-syntax-highlighter/dist/esm/languages/prism/typescript';
+import tsxSyntax from 'react-syntax-highlighter/dist/esm/languages/prism/tsx';
+import jsSyntax from 'react-syntax-highlighter/dist/esm/languages/prism/javascript';
+import jsxSyntax from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
+import cssSyntax from 'react-syntax-highlighter/dist/esm/languages/prism/css';
+import mdSyntax from 'react-syntax-highlighter/dist/esm/languages/prism/markdown';
 import type { SchemaNode } from '@teambit/semantics.entities.semantic-schema';
 import { SetAccessorSchema } from '@teambit/semantics.entities.semantic-schema';
 import { transformSignature } from '@teambit/api-reference.utils.schema-node-signature-transform';
@@ -14,6 +23,14 @@ import { extractCodeBlock } from '@teambit/api-reference.renderers.api-node-deta
 import classNames from 'classnames';
 
 import styles from './function-node-summary.module.scss';
+
+// `lang` below is the source file's ending: ts/tsx/js/jsx, with scss/sass mapped to css and mdx to md.
+SyntaxHighlighter.registerLanguage('ts', tsSyntax);
+SyntaxHighlighter.registerLanguage('tsx', tsxSyntax);
+SyntaxHighlighter.registerLanguage('js', jsSyntax);
+SyntaxHighlighter.registerLanguage('jsx', jsxSyntax);
+SyntaxHighlighter.registerLanguage('css', cssSyntax);
+SyntaxHighlighter.registerLanguage('md', mdSyntax);
 
 export type FunctionNodeSummaryProps = {
   groupElementClassName?: string;
