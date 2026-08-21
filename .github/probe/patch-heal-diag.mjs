@@ -57,6 +57,30 @@ const patched = `    const modelComponent = await legacyScope.getModelComponentI
         w('importerRepoScopePath=' + String(legacyScope.scopeImporter.repo && legacyScope.scopeImporter.repo.scopePath));
         w('scopeIndexHasIt=' + String(Boolean(repo.scopeIndex && repo.scopeIndex.find(h))));
       } catch (he) { w('hash-diag-error=' + (he && he.message ? he.message : String(he))); }
+      // THE CANDIDATE FIX: the heal only ever wants the component's HEAD, but it
+      // looks the component up WITH the stale .bitmap version. sources.get is
+      // version-sensitive and returns undefined when that version is not in the
+      // component's versions array -- even though the component and its head are
+      // both present. Compare the two lookups side by side.
+      try {
+        const bare = id.changeVersion(undefined);
+        const mcBare = await legacyScope.getModelComponentIfExist(bare);
+        w('FIX bareId=' + bare.toString());
+        w('FIX modelComponentBare=' + (mcBare ? 'FOUND' : 'undefined'));
+        if (mcBare) {
+          const bareHead = mcBare.getHeadRegardlessOfLaneAsTagOrHash();
+          w('FIX bareHead=' + (bareHead || 'NONE'));
+          if (bareHead) {
+            const v = await mcBare.loadVersion(bareHead, legacyScope.objects);
+            w('FIX bareHeadMainFile=' + (v && v.mainFile));
+          }
+          try { w('FIX hasTagIncludeOrphaned(staleVersion)=' + String(mcBare.hasTagIncludeOrphaned(id.version))); } catch (te) { w('FIX hasTag-error=' + te.message); }
+          try {
+            const { isHash } = require('@teambit/component-version');
+            w('FIX isHash(staleVersion)=' + String(isHash(id.version)));
+          } catch (ie) { w('FIX isHash-error=' + ie.message); }
+        }
+      } catch (fe) { w('FIX diag-error=' + (fe && fe.message ? fe.message : String(fe))); }
       w('verdict=' + ((!modelComponent) ? 'a:NOT_FOUND' : (!head ? 'b:FOUND_NO_HEAD' : 'ok')));
     } catch (dx) {
       process.stdout.write('HEALDIAG diag-error=' + (dx && dx.message ? dx.message : String(dx)) + '\\n');
