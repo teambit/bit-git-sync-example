@@ -1,0 +1,70 @@
+# Diagnostic only. Manually triggered, never on a schedule or a push.
+# Answers one question: does the main-sync heal decline on a RUNNER when the
+# lane phase has not run first? If it heals here, the cause is in-process state
+# from `bit ci sync --all`'s lane phase, not the environment.
+name: debug-heal-probe
+on:
+  workflow_dispatch:
+    inputs:
+      bit-version:
+        description: bit version to install
+        required: false
+        default: '2.2.5'
+
+# Read-only against the remote; the probe writes only the local .bitmap.
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      # The poisoned .bitmap lives on the sync branch, not on main.
+      - uses: actions/checkout@v4
+        with:
+          ref: bit-sync/main
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Install the version under test directly. `bit-tasks/init` would read the
+      # `engine` on THIS branch (2.0.69), which predates the heal entirely.
+      - name: Install bit
+        run: |
+          npm i -g @teambit/bvm
+          bvm install "${{ inputs.bit-version }}" --use-system-node --skip-update-check --skip-update-path
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+          echo "BIT_ROOT=$HOME/.bvm/versions/${{ inputs.bit-version }}/bit-${{ inputs.bit-version }}/node_modules" >> "$GITHUB_ENV"
+
+      - name: Environment
+        run: |
+          echo "node: $(node -v)"
+          echo "bit:  $(bit -v || true)"
+          echo "BIT_ROOT=$BIT_ROOT"
+          test -d .bit && echo ".bit: present in git" || echo ".bit: absent (fresh scope)"
+        env:
+          BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
+
+      # Matches what bit-tasks/init does before the action runs.
+      - name: bit install
+        continue-on-error: true
+        run: bit install
+        env:
+          BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
+
+      - name: Probe A - clean heal, no lane phase, no perturbation
+        run: node .github/probe/heal-probe.mjs
+        env:
+          PHASE: clean
+          BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
+
+      - name: Restore .bitmap
+        run: git checkout -- .bitmap
+
+      - name: Probe B - layer by layer
+        run: node .github/probe/heal-probe.mjs
+        env:
+          PHASE: layers
+          BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
