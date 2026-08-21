@@ -7,6 +7,11 @@
 name: debug-sync-trace
 on:
   workflow_dispatch:
+    inputs:
+      patch:
+        description: 'which patch to apply to the installed bit: diag | fix | none'
+        required: false
+        default: diag
 
 permissions:
   contents: write
@@ -45,10 +50,14 @@ jobs:
         env:
           BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
 
-      - name: Instrument mainFileOnScopeHead to distinguish the three absent cases
+      - name: Patch the installed bit (diag or fix)
         run: |
           HEAL_FILE="${{ steps.pre.outputs.bitroot }}/@teambit/ci/dist/sync/heal-missing-main-files.js"
-          HEAL_FILE="$HEAL_FILE" node .github/probe/patch-heal-diag.mjs
+          case "${{ inputs.patch }}" in
+            diag) HEAL_FILE="$HEAL_FILE" node .github/probe/patch-heal-diag.mjs ;;
+            fix)  HEAL_FILE="$HEAL_FILE" node .github/probe/patch-heal-fix.mjs ;;
+            *)    echo "no patch applied" ;;
+          esac
 
       - name: bit ci sync --all --log debug, then capture its log untouched
         continue-on-error: true
