@@ -105,7 +105,9 @@ export class APIReferenceModel {
         collectedInternals.push(...exportedNode.internals);
         return;
       }
+
       const targetNode = ExportSchema.isExportSchema(exportedNode) ? exportedNode.exportNode : exportedNode;
+
       const allDescendants = targetNode.getAllNodesRecursively();
       allDescendants.forEach((descendant) => {
         if (descendant !== targetNode && this.isInternalTypeReference(descendant)) {
