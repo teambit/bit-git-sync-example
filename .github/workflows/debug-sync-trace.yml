@@ -45,6 +45,11 @@ jobs:
         env:
           BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
 
+      - name: Instrument mainFileOnScopeHead to distinguish the three absent cases
+        run: |
+          HEAL_FILE="${{ steps.pre.outputs.bitroot }}/@teambit/ci/dist/sync/heal-missing-main-files.js"
+          HEAL_FILE="$HEAL_FILE" node .github/probe/patch-heal-diag.mjs
+
       - name: bit ci sync --all --log debug, then capture its log untouched
         continue-on-error: true
         run: |
