@@ -1,0 +1,67 @@
+# Diagnostic only, manual trigger. Runs the SAME command the action runs for a
+# schedule event (`bit ci sync --all`) but at `--log debug`, then dumps the
+# importer's decisions around the main-sync heal.
+#
+# This is the operation the hourly cron already performs. The lane targets are
+# converged and `main` halts, so it is not expected to write anything new.
+name: debug-sync-trace
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: bit-sync-reconcile-all
+  cancel-in-progress: false
+
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: bit-tasks/init@v2
+        env:
+          BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
+
+      - name: Identity the action would set
+        run: |
+          git config user.name 'bit-sync[bot]'
+          git config user.email 'bit-sync[bot]@users.noreply.github.com'
+
+      - name: bit ci sync --all --log debug
+        id: sync
+        continue-on-error: true
+        run: bit ci sync --all --log debug
+        env:
+          BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Locate the debug log
+        id: log
+        run: echo "path=$(bit globals --json | jq -r '."Log file"')" >> "$GITHUB_OUTPUT"
+        env:
+          BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
+
+      - name: Importer decisions around the heal
+        run: |
+          LOG="${{ steps.log.outputs.path }}"
+          echo "log: $LOG  ($(wc -l < "$LOG") lines)"
+          echo "===== every importWithoutDeps / getExternalManyWithoutDeps decision ====="
+          grep -nE "importWithoutDeps|getExternalManyWithoutDeps|no more ids left|Fetching them from a remote" "$LOG" \
+            | tail -60
+          echo "===== every mention of the wedged component ====="
+          grep -n "schema-node-member-summary" "$LOG" | tail -40
+          echo "===== the heal's own window ====="
+          grep -n -B25 "missing main file untouched" "$LOG" | tail -45
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bit-debug-log
+          path: ${{ steps.log.outputs.path }}
+          if-no-files-found: warn
+          retention-days: 5
