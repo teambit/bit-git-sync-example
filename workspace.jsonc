@@ -17,9 +17,13 @@
    * the bit version that this workspace requires. `bit-tasks/init` reads it
    * and installs this version. Without it, the runner gets the latest stable
    * release. That release does not have `bit ci sync`.
+   *
+   * 2.2.5 is the floor for the reconciler: it is the first release that heals a
+   * `.bitmap` entry whose `mainFile` is no longer in git. Below it, one such
+   * entry halts every main sync until a human edits `.bitmap` by hand.
    **/
   "teambit.harmony/bit": {
-    "engine": "2.0.69"
+    "engine": "2.2.5"
   },
   "teambit.dependencies/dependency-resolver": {
     "policy": {
