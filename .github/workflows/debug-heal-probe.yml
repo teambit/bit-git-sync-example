@@ -25,6 +25,10 @@ jobs:
           ref: bit-sync/main
           fetch-depth: 0
 
+      # The probe script lives on the default branch, not on the sync branch.
+      - name: Bring the probe script in from main
+        run: git checkout origin/main -- .github/probe/heal-probe.mjs
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
