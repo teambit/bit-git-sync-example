@@ -42,6 +42,21 @@ const patched = `    const modelComponent = await legacyScope.getModelComponentI
       w('currentLane=' + (lane ? lane.id().toString() : 'main/none'));
       w('scopePath=' + legacyScope.path);
       w('scopeName=' + legacyScope.name);
+      // Is the object actually on disk, and does the fetcher share our Repository?
+      try {
+        const { ModelComponent } = require('@teambit/objects');
+        const h = ModelComponent.fromBitId(id).hash();
+        const repo = legacyScope.objects;
+        w('expectedHash=' + h.toString());
+        w('objectPath=' + repo.objectPath(h));
+        w('onDisk=' + String(await repo.has(h)));
+        w('inMemoryPending=' + String(Boolean(repo.objects[h.hash.toString()])));
+        w('repoScopePath=' + repo.scopePath);
+        w('importerRepoIsSameObject=' + String(legacyScope.scopeImporter.repo === repo));
+        w('importerScopeIsSameObject=' + String(legacyScope.scopeImporter.scope === legacyScope));
+        w('importerRepoScopePath=' + String(legacyScope.scopeImporter.repo && legacyScope.scopeImporter.repo.scopePath));
+        w('scopeIndexHasIt=' + String(Boolean(repo.scopeIndex && repo.scopeIndex.find(h))));
+      } catch (he) { w('hash-diag-error=' + (he && he.message ? he.message : String(he))); }
       w('verdict=' + ((!modelComponent) ? 'a:NOT_FOUND' : (!head ? 'b:FOUND_NO_HEAD' : 'ok')));
     } catch (dx) {
       process.stdout.write('HEALDIAG diag-error=' + (dx && dx.message ? dx.message : String(dx)) + '\\n');
