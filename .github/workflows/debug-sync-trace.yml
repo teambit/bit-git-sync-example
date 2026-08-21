@@ -33,35 +33,51 @@ jobs:
           git config user.name 'bit-sync[bot]'
           git config user.email 'bit-sync[bot]@users.noreply.github.com'
 
-      - name: bit ci sync --all --log debug
-        id: sync
+      # bit truncates debug.log at process start, so the path must be resolved
+      # BEFORE the sync and the file copied immediately after, with no bit
+      # command in between -- otherwise we capture that command's log instead.
+      - name: Resolve the log path and stash the probe
+        id: pre
+        run: |
+          echo "path=$(bit globals --json | jq -r '."Log file"')" >> "$GITHUB_OUTPUT"
+          echo "bitroot=$HOME/.bvm/versions/$(bit -v)/bit-$(bit -v)/node_modules" >> "$GITHUB_OUTPUT"
+          cp .github/probe/heal-probe.mjs /tmp/heal-probe.mjs
+        env:
+          BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
+
+      - name: bit ci sync --all --log debug, then capture its log untouched
         continue-on-error: true
-        run: bit ci sync --all --log debug
+        run: |
+          bit ci sync --all --log debug || echo "sync exited $?"
+          cp "${{ steps.pre.outputs.path }}" /tmp/sync-debug.log
         env:
           BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Locate the debug log
-        id: log
-        run: echo "path=$(bit globals --json | jq -r '."Log file"')" >> "$GITHUB_OUTPUT"
+      - name: Importer decisions during the sync
+        run: |
+          L=/tmp/sync-debug.log
+          echo "captured $(wc -l < $L) lines, last stamp: $(grep -oE '2026-[0-9:. +-]+' $L | tail -1)"
+          echo "===== importWithoutDeps / getExternalManyWithoutDeps ====="
+          grep -nE "importWithoutDeps, total|getExternalManyWithoutDeps, total|no more ids left|Fetching them from a remote" $L | tail -40
+          echo "===== the heal window (25 lines before the verdict) ====="
+          grep -n -B25 "missing main file untouched" $L | tail -40
+          echo "===== schema-node-member-summary, object/fetch lines only ====="
+          grep -n "schema-node-member-summary" $L | grep -viE "node_modules|writing a file|json-vinyl|dest \(new\)|src \(existing\)" | tail -25
+
+      # CONTROL: same on-disk state the sync just left (bit-sync/main checked
+      # out, .bit populated), but a FRESH process. If this heals, the cause is
+      # in-process state, not anything on disk.
+      - name: Control - standalone heal on the post-sync working tree
+        run: |
+          git status --porcelain=v1 -b | head -3
+          BIT_ROOT="${{ steps.pre.outputs.bitroot }}" PHASE=layers node /tmp/heal-probe.mjs
         env:
           BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
 
-      - name: Importer decisions around the heal
-        run: |
-          LOG="${{ steps.log.outputs.path }}"
-          echo "log: $LOG  ($(wc -l < "$LOG") lines)"
-          echo "===== every importWithoutDeps / getExternalManyWithoutDeps decision ====="
-          grep -nE "importWithoutDeps|getExternalManyWithoutDeps|no more ids left|Fetching them from a remote" "$LOG" \
-            | tail -60
-          echo "===== every mention of the wedged component ====="
-          grep -n "schema-node-member-summary" "$LOG" | tail -40
-          echo "===== the heal's own window ====="
-          grep -n -B25 "missing main file untouched" "$LOG" | tail -45
-
       - uses: actions/upload-artifact@v4
         with:
-          name: bit-debug-log
-          path: ${{ steps.log.outputs.path }}
+          name: sync-debug-log
+          path: /tmp/sync-debug.log
           if-no-files-found: warn
           retention-days: 5
