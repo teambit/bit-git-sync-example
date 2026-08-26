@@ -137,12 +137,49 @@ export sends an empty value.
 After you save the webhook, export a lane. Then read the delivery log. A
 correct delivery returns 204.
 
+## The demo: two workspaces, two personas
+
+The flows read best as a conversation between two people who never talk to
+each other. Set up one workspace for each persona, in two terminals.
+
+**The git developer** works in a clone of this repository and never runs a
+`bit` command:
+
+```sh
+git clone https://github.com/teambit/bit-git-sync-example
+cd bit-git-sync-example
+```
+
+**The bit developer** works in a workspace attached to the scope and never
+runs a `git` command:
+
+```sh
+mkdir bit-ws && cd bit-ws
+bit init --default-scope teambit.api-reference
+bit import teambit.api-reference/utils/schema-node-label
+```
+
+Each flow below names its persona. The sync is the only messenger between
+the two: an export on the bit side becomes a branch, a pull request or a
+diff on the git side, and a pushed commit on the git side becomes a snap on
+the bit side.
+
+| Flow | Persona | Terminal |
+| --- | --- | --- |
+| 1. Lane to branch | bit developer | bit workspace |
+| 2. Branch to lane | git developer | git clone |
+| 3. Merge to release | either, on github.com | pull request page |
+| 4. Main drift to git | bit developer | bit workspace |
+| Adopt (optional) | git developer | git clone |
+
 ## Run the four flows
 
 ### Flow 1: a lane becomes a branch and a pull request
 
+In the bit workspace:
+
 1. Create a lane: `bit lane create hello`.
-2. Change the label format in `components/utils/schema-node-label/schema-node-label.ts`.
+2. Change the imported `schema-node-label` component.
 3. Snap the change: `bit snap -m "change the label format"`.
 4. Export the lane: `bit export`.
 
@@ -150,7 +187,13 @@ correct delivery returns 204.
 creates the branch `hello`. The run opens a pull request from `hello` into
 `main`. The pull request body names the lane, the components and the lane head.
 
+If the default branch lags the scope, the pull request also carries the
+`.bitmap` version bumps that close that gap. Merge the open main-sync pull
+request first, and a lane pull request shows your change alone.
+
 ### Flow 2: a git commit reaches the lane
+
+In the git clone:
 
 1. Fetch the new branch: `git fetch origin`.
 2. Check it out: `git checkout hello`.
@@ -159,12 +202,16 @@ creates the branch `hello`. The run opens a pull request from `hello` into
 
 **Expected result:** the push starts the `bit-sync` workflow. The run snaps the
 branch content and exports it to the lane. The lane head on bit.cloud moves
-forward and carries your git edit.
+forward and carries your git edit. Components that depend on the changed one
+get an auto-snap, so the lane can grow more components than you edited. That
+is bit's dependency semantics, not a defect.
 
 The workflow ignores a push to `main` and a push to `bit-sync/**`, because
 those pushes are the action's own output.
 
 ### Flow 3: a merged pull request releases new versions
+
+On the pull request page:
 
 1. Open the pull request from flow 1.
 2. Read the diff.
@@ -172,10 +219,13 @@ those pushes are the action's own output.
 
 **Expected result:** the merge starts the `bit-release` workflow. The run
 merges the lane into the main scope. The run tags and exports new component
-versions. The remote lane becomes archived. The version numbers therefore
-describe merged state only.
+versions — the changed components and their auto-tagged dependents. The
+remote lane becomes archived, and the next reconcile deletes the lane
+branch. The version numbers therefore describe merged state only.
 
 ### Flow 4: main-scope drift reaches the default branch
+
+In the bit workspace:
 
 1. Switch to main: `bit switch main`.
 2. Snap a change: `bit snap -m "change the label format on main"`.
@@ -248,6 +298,11 @@ back is not permitted.
 The workflow adopts each pull request one time. A lane pointer in `.bitmap` is
 the evidence of an earlier adoption, and the job stops when it finds one.
 
+The reconciler never closes an adopted pull request and never deletes its
+branch, even when someone deletes the lane on bit.cloud. A branch with no
+sync history of its own belongs to a person, and the reconcile reports it
+as a no-op and moves on. Close such a pull request yourself.
+
 Delete this file if you do not want the behavior.
 
 One cosmetic effect follows from the trigger. The sync opens its own pull
@@ -265,7 +320,7 @@ pull requests under **Settings > Actions > General**.
 | A run starts, but no pull request appears. | The repository forbids the write. | Turn on **Allow GitHub Actions to create and approve pull requests**. Confirm that the workflow declares `pull-requests: write`. |
 | The run halts, and the pull request gets the label `bit-sync-conflict`. | Git and the lane changed the same line. | Read the comment on the pull request. Resolve the conflict on the branch, push the result, then remove the label. The sync stays paused for that lane while the label is present. |
 | The run halts with a shallow-clone message. | `actions/checkout` fetched one commit. | Keep `fetch-depth: 0` in the checkout step. The reconciler reads the full history, so a shallow clone stops it before any write. |
-| The run reports that the lane is not in this scope. | The lane holds components from another scope. | One lane must hold components of one scope in this version. Move the foreign components to their own lane. |
+| The run skips a lane as "nothing to mirror". | Every component on the lane belongs to another scope. | This is correct behavior, not an error. A lane mirrors only the components of this repository's scope; foreign components stay on the lane as package dependencies, and only their own scopes' repositories can mirror their sources. A lane with at least one own-scope component syncs that slice. |
 
 ## Files
 
