@@ -18,26 +18,18 @@
    * and installs this version. Without it, the runner gets the latest stable
    * release. That release does not have `bit ci sync`.
    *
-   * 2.2.5 is the floor for the reconciler: it is the first release that heals a
-   * `.bitmap` entry whose `mainFile` is no longer in git. Below it, one such
-   * entry halts every main sync until a human edits `.bitmap` by hand.
+   * 2.2.7 is the floor for the reconciler: it is the first release whose
+   * `.bitmap` heal survives a stale version in the entry (teambit/bit#10652).
+   * Below it, one stale entry halts every main sync until a human edits
+   * `.bitmap` by hand. 2.2.5 is the floor for cross-scope lanes.
    **/
   "teambit.harmony/bit": {
-    "engine": "2.2.5"
+    "engine": "2.2.11"
   },
   "teambit.dependencies/dependency-resolver": {
     "policy": {
       "dependencies": {},
       "peerDependencies": {}
-    }
-  },
-  /**
-   * The component uses the core Node env. A core env needs no install step,
-   * so a fresh clone has no env-resolution problem.
-   **/
-  "teambit.workspace/variants": {
-    "components/greeting": {
-      "teambit.harmony/node": {}
     }
   },
   /**

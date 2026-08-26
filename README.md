@@ -1,12 +1,19 @@
 # bit-git-sync example
 
 This repository is a runnable example of the `bit ci sync` integration. It
-holds one small Bit component, the sync configuration, and the GitHub Actions
-workflows that keep bit.cloud and git equal.
+holds the sync configuration and the GitHub Actions workflows that keep one
+bit.cloud scope and this git repository equal.
 
-The example carries no organization of its own. You clone it, you point it at
+This instance mirrors the `teambit.api-reference` scope: every component on
+the scope's main has a directory under `components/`, and the hourly sync
+keeps the two sides converged. A fresh fork starts smaller — `setup.sh`
+tracks one component — and grows the same way this repository did: each
+merged main-sync pull request adopts the current state of the scope into git.
+
+The example carries no organization of its own. You fork it, you point it at
 your own bit.cloud scope, and you watch the four flows run in your own
-repository.
+repository. The demo component that every flow edits is
+`components/utils/schema-node-label`.
 
 ## What this example proves
 
@@ -22,15 +29,30 @@ The four flows use two workflows. `bit-sync.yml` runs flows 1, 2 and 4.
 
 ## Prerequisites
 
-### bit 2.0.69 or later
+### bit 2.2.7 or later
 
-Use bit **2.0.69** or later. The `workspace.jsonc` of this repository pins the version for the
-workflows. `bit-tasks/init@v2` reads the `engine` value in `teambit.harmony/bit` and installs
-that version. Without the pin, the runner gets the latest stable release, and that release does
-not have `bit ci sync`.
+Use bit **2.2.7** or later; this repository pins **2.2.11**, the current
+nightly. The `workspace.jsonc` of this repository pins the version for the
+workflows. `bit-tasks/init@v2` reads the `engine` value in
+`teambit.harmony/bit` and installs that version. Without the pin, the runner
+gets the latest stable release, and that release does not have `bit ci sync`.
 
-If a workflow runs on a bit version without the command, the action stops and names the
-requirement.
+The pin must be a concrete version, not a range. Every release with
+`bit ci sync` is a nightly, so there is no stable pointer to rely on, and
+`bit-tasks/init` compares the engine value to the installed version as a
+string.
+
+The floor is not arbitrary. Each of these versions removed a way for the sync
+to halt:
+
+| Version | What it added |
+| --- | --- |
+| 2.0.65 | The `bit ci sync` command exists. |
+| 2.2.5 | A cross-scope lane mirrors its own-scope slice instead of halting. |
+| 2.2.7 | The `.bitmap` heal survives a stale version in the entry. Below this, one stale entry halts every main sync until a human edits `.bitmap` by hand. |
+
+If a workflow runs on a bit version without the command, the action stops and
+names the requirement.
 
 ### What you need
 
@@ -205,7 +227,7 @@ No key decides who approves a change, because people merge pull requests.
 
 ## Why the action is pinned
 
-Each workflow uses `teambit/bit-git-sync@66c0fdf9e34e45f70b4f397b38b2b01f79dd1f41`.
+Each workflow uses `teambit/bit-git-sync@223af0ec2ae999a182dcb3fe1a8b52d12e3323bf`.
 The pin is a commit SHA, not a tag. The job holds `contents: write` and
 `pull-requests: write`, so a moved tag would give new code that write
 permission. Update the SHA when you choose to, and read the change first.
@@ -228,6 +250,13 @@ the evidence of an earlier adoption, and the job stops when it finds one.
 
 Delete this file if you do not want the behavior.
 
+One cosmetic effect follows from the trigger. The sync opens its own pull
+requests as `github-actions[bot]`, and a repository can require approval for
+workflow runs on bot pull requests. Such a run waits as **action required**
+on the Actions tab, and approval would only reach the skip condition above.
+You can approve it, ignore it, or turn off the approval requirement for bot
+pull requests under **Settings > Actions > General**.
+
 ## Troubleshooting
 
 | Symptom | Cause | Repair |
@@ -242,9 +271,10 @@ Delete this file if you do not want the behavior.
 
 | Path | Purpose |
 | --- | --- |
-| `workspace.jsonc` | The workspace, the env and the sync configuration. |
-| `components/utils/schema-node-label/` | The example component. |
-| `setup.sh` | Writes your scope, installs, tracks the component. |
+| `workspace.jsonc` | The workspace, the engine pin and the sync configuration. |
+| `components/` | The mirrored components of the scope. |
+| `components/utils/schema-node-label/` | The demo component that the flows edit. |
+| `setup.sh` | Writes your scope, installs, tracks the demo component. |
 | `.github/workflows/bit-sync.yml` | Flows 1, 2 and 4. |
 | `.github/workflows/bit-release.yml` | Flow 3. |
 | `.github/workflows/bit-adopt-pr.yml` | The optional adopt workflow. |
