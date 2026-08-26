@@ -11,5 +11,5 @@ export function schemaNodeLabel(nodeId: string): string {
     .split('-')
     .filter(Boolean)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
+    .join(' '); // words joined with a single space
 }
