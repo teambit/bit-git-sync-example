@@ -6,7 +6,7 @@
  * segment reaches the output.
  */
 export function schemaNodeLabel(nodeId: string): string {
-  const name = nodeId.split('/').pop() ?? nodeId;
+  const name = nodeId.split('/').pop() ?? nodeId; // the final segment of the id
   return name
     .split('-')
     .filter(Boolean)
