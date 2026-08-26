@@ -309,9 +309,11 @@ Two facts decide how a multi-scope organization sets this up:
   lane is no longer readable. Once one scope's repository merges its slice,
   the other scopes' slices stay on the archived lane, unreleased. Keep
   release-bound lanes to one scope, or release the other slices from a
-  workspace before merging the pull request here. A release that leaves a
-  lane open while foreign components remain is the fix, and it belongs in
-  `bit ci merge`, not in this example.
+  workspace before merging the pull request here. The fix — a release that
+  leaves the lane open while another scope's components are not on their
+  main yet, so the last scope to release archives it — is
+  [teambit/bit#10661](https://github.com/teambit/bit/pull/10661). Once it
+  ships in a nightly, raise the `engine` pin and this caveat goes away.
 
 ## Why the action is pinned
 
