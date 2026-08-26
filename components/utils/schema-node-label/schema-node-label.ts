@@ -1,6 +1,7 @@
 /**
  * Formats a schema node id into the label that an API reference page shows.
  * Example: "renderers/type-ref" becomes "Type Ref".
+ * A second example: "utils/schema-node-label" becomes "Schema Node Label".
  * The id's namespace part carries no label information, so only the final
  * segment reaches the output.
  */
