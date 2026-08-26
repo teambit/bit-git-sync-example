@@ -275,6 +275,44 @@ Four more keys are valid. This example uses none of them.
 
 No key decides who approves a change, because people merge pull requests.
 
+## Cross-scope lanes
+
+A lane is hosted on one scope, but its components can belong to many. This
+repository mirrors one scope, so it reconciles a lane over its own slice
+only. Verified on 2026-08-26 with a lane on `teambit.api-reference` that
+carried one own-scope component and one `luvk.test` component.
+
+| Flow | What happens on a cross-scope lane |
+| --- | --- |
+| 1. Lane to branch | The pull request mirrors the own-scope slice and lists the foreign components separately as "not mirrored". No foreign source is written into this repository; the branch consumes those components as package dependencies at their lane versions. |
+| 2. Branch to lane | The push snaps and exports the own-scope components only. The foreign entries keep their lane heads. |
+| 3. Merge to release | The release tags and exports the own-scope slice only, then it **archives the whole lane**. The foreign components are not released, and their scope's main does not move. |
+| 4. Main drift to git | Unaffected. The main scope holds own-scope components by definition. |
+
+A change that touches only foreign components does not move this mirror.
+A lane with no own-scope components at all is skipped on an enumerated run
+(the hourly reconcile stays green), refused on a named run, and halted if a
+live mirror loses its last own-scope component.
+
+Two facts decide how a multi-scope organization sets this up:
+
+- **One repository per scope, and the webhook is the only automatic path
+  for a lane hosted elsewhere.** `lanes: ["*"]` enumerates the lanes hosted
+  on this repository's own scope, so the hourly reconcile never finds a
+  lane that another scope hosts. The `bit-export` webhook does reach it: the
+  payload carries `componentIds`, the action skips the run when none of the
+  touched components belong to this scope, and otherwise passes the
+  scope-qualified `laneId` to `bit ci sync`. The **Run workflow** form
+  accepts the same `host-scope/lane` id.
+- **Merge order matters, and today only one repository can release a
+  lane.** The release archives the lane unconditionally, and an archived
+  lane is no longer readable. Once one scope's repository merges its slice,
+  the other scopes' slices stay on the archived lane, unreleased. Keep
+  release-bound lanes to one scope, or release the other slices from a
+  workspace before merging the pull request here. A release that leaves a
+  lane open while foreign components remain is the fix, and it belongs in
+  `bit ci merge`, not in this example.
+
 ## Why the action is pinned
 
 Each workflow uses `teambit/bit-git-sync@223af0ec2ae999a182dcb3fe1a8b52d12e3323bf`.
