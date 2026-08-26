@@ -37,7 +37,9 @@
    * bit-git-sync action both read. The README explains each key.
    **/
   "teambit.component/issues": {
-    "ignoreIssues": ["CircularDependencies"]
+    "ignoreIssues": [
+      "CircularDependencies"
+    ]
   },
   "teambit.git/ci": {
     "sync": {
