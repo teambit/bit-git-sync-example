@@ -292,7 +292,7 @@
     "utils/schema-node-label": {
         "name": "utils/schema-node-label",
         "scope": "teambit.api-reference",
-        "version": "0.0.4",
+        "version": "69c34d8a7a680afe718d662b91976e022ae7dd25",
         "mainFile": "index.ts",
         "rootDir": "components/utils/schema-node-label"
     },
