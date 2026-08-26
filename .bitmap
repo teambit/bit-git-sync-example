@@ -292,7 +292,7 @@
     "utils/schema-node-label": {
         "name": "utils/schema-node-label",
         "scope": "teambit.api-reference",
-        "version": "0.0.4",
+        "version": "bd3d5a9ddf2e1e76f8a2cbcdc1170aa9997c22e3",
         "mainFile": "index.ts",
         "rootDir": "components/utils/schema-node-label"
     },
@@ -310,5 +310,12 @@
         "mainFile": "index.ts",
         "rootDir": "components/utils/sort-api-nodes"
     },
-    "$schema-version": "17.0.0"
+    "$schema-version": "17.0.0",
+    "_bit_lane": {
+        "id": {
+            "name": "e2e-cross",
+            "scope": "teambit.api-reference"
+        },
+        "exported": true
+    }
 }
