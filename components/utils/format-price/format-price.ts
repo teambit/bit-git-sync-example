@@ -1,5 +1,5 @@
 /**
- * Formats an amount of money for display.
+ * Formats an amount of money for display. Rejects NaN and infinities.
  * Example: formatPrice(1999.5) returns "$1,999.50".
  * The currency and the locale are optional. The default is US dollars in
  * the en-US locale.
