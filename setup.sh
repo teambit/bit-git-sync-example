@@ -115,7 +115,6 @@ cat <<'CHECKLIST'
    Event:   Components > Export succeeded
    URL:     https://api.github.com/repos/<owner>/<repo>/dispatches
    Headers: Authorization: Bearer <GitHub token with repo scope>
-            Accept: application/vnd.github+json
    Template: Custom, with the body that the README gives.
    A correct delivery returns 204.
 

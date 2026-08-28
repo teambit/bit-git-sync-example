@@ -134,9 +134,8 @@ If this setting is off, the run fails when it opens the pull request.
 2. Select the event **Components > Export succeeded**.
 3. Set the URL to `https://api.github.com/repos/<owner>/<repo>/dispatches`.
 4. Add the header `Authorization: Bearer <GitHub token with repo scope>`.
-5. Add the header `Accept: application/vnd.github+json`.
-6. Select the template type **Custom**.
-7. Paste this payload template:
+5. Select the template type **Custom**.
+6. Paste this payload template:
 
 ```json
 {"event_type":"bit-export","client_payload":{"owner":"{{owner}}","componentIds":"{{componentIds}}","username":"{{username}}","userId":"{{userId}}","laneId":"{{laneId}}"}}
