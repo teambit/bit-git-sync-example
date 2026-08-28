@@ -29,11 +29,11 @@ The four flows use two workflows. `bit-sync.yml` runs flows 1, 2 and 4.
 
 ## Prerequisites
 
-### bit 2.2.7 or later
+### bit 2.2.16 or later
 
-Use bit **2.2.7** or later; this repository pins **2.2.11**, the current
+Use bit **2.2.16** or later; this repository pins **2.2.18**, the current
 nightly. The `workspace.jsonc` of this repository pins the version for the
-workflows. `bit-tasks/init@v2` reads the `engine` value in
+workflows. `bit-tasks/init@v3` reads the `engine` value in
 `teambit.harmony/bit` and installs that version. Without the pin, the runner
 gets the latest stable release, and that release does not have `bit ci sync`.
 
@@ -50,6 +50,7 @@ to halt:
 | 2.0.65 | The `bit ci sync` command exists. |
 | 2.2.5 | A cross-scope lane mirrors its own-scope slice instead of halting. |
 | 2.2.7 | The `.bitmap` heal survives a stale version in the entry. Below this, one stale entry halts every main sync until a human edits `.bitmap` by hand. |
+| 2.2.16 | A release keeps a cross-scope lane open until every scope has released its slice. Below this, the first repository to merge archives the lane and strands the other scopes' components. |
 
 If a workflow runs on a bit version without the command, the action stops and
 names the requirement.
@@ -63,6 +64,7 @@ names the requirement.
 | A GitHub repository that you own | The workflows need write permission on it. |
 | A bit.cloud token of a service account | The workflows write to your scope with it. |
 | A GitHub token with the `repo` scope | bit.cloud sends it in the webhook header. |
+| Optional: a second GitHub token in the secret `BIT_SYNC_GH_TOKEN` | A push made with the default `GITHUB_TOKEN` starts no other workflow, so a sync pull request gets no CI checks. A push made with a personal or App token does. Without the secret, the workflows use the default token. |
 
 Install the Bit CLI with `npx @teambit/bvm install`.
 
@@ -77,8 +79,9 @@ Install the Bit CLI with `npx @teambit/bvm install`.
 ```
 
 The script does five things. It writes your scope into `workspace.jsonc`. It
-initializes the workspace with `bit init`. It runs `bit install`. It tracks
-the `utils/schema-node-label` component. It prints the workspace status.
+initializes the workspace with `bit init`. It tracks the
+`utils/schema-node-label` component. It runs `bit install`. It prints the
+workspace status.
 
 The script rejects a value that is not a scope id. A scope id has two parts
 and one dot, for example `acme.shop`.
@@ -87,9 +90,13 @@ The repository is configured to the `teambit.api-reference` scope. The script
 writes your scope in its place. Commit the changed `workspace.jsonc` and the
 new `.bitmap`.
 
+`bit ci sync --init` writes the same two workflow files into any workspace
+and prints the same checklist. This repository ships the files already, so
+you do not need to run it here.
+
 ## Manual steps
 
-The script cannot do these three steps for you.
+The script cannot do these four steps for you.
 
 ### 1. Create the repository secret
 
@@ -124,6 +131,10 @@ If this setting is off, the run fails when it opens the pull request.
 {"event_type":"bit-export","client_payload":{"owner":"{{owner}}","componentIds":"{{componentIds}}","username":"{{username}}","userId":"{{userId}}","laneId":"{{laneId}}"}}
 ```
 
+Create the webhook in one go. Editing a saved webhook drops its custom
+headers (a bit.cloud defect, verified 2026-07-29). If the URL, the headers or
+the template have to change later, delete the webhook and create a new one.
+
 bit.cloud replaces each `{{...}}` token before it sends the request. A correct
 delivery returns 204.
 
@@ -136,6 +147,13 @@ export sends an empty value.
 
 After you save the webhook, export a lane. Then read the delivery log. A
 correct delivery returns 204.
+
+### 4. Export one time
+
+Run `bit lane create hello && bit snap -m "first snap" && bit export` from
+the workspace. The scope now has content, and the `bit-sync` workflow opens
+the first branch and pull request. Flow 1 below walks through the same
+commands with more detail.
 
 ## The demo: two workspaces, two personas
 
@@ -286,7 +304,7 @@ carried one own-scope component and one `luvk.test` component.
 | --- | --- |
 | 1. Lane to branch | The pull request mirrors the own-scope slice and lists the foreign components separately as "not mirrored". No foreign source is written into this repository; the branch consumes those components as package dependencies at their lane versions. |
 | 2. Branch to lane | The push snaps and exports the own-scope components only. The foreign entries keep their lane heads. |
-| 3. Merge to release | The release tags and exports the own-scope slice only, then it **archives the whole lane**. The foreign components are not released, and their scope's main does not move. |
+| 3. Merge to release | The release tags and exports the own-scope slice only. The lane stays open while another scope's components are not on their main yet; the last scope to release archives it. |
 | 4. Main drift to git | Unaffected. The main scope holds own-scope components by definition. |
 
 A change that touches only foreign components does not move this mirror.
@@ -304,16 +322,14 @@ Two facts decide how a multi-scope organization sets this up:
   touched components belong to this scope, and otherwise passes the
   scope-qualified `laneId` to `bit ci sync`. The **Run workflow** form
   accepts the same `host-scope/lane` id.
-- **Merge order matters, and today only one repository can release a
-  lane.** The release archives the lane unconditionally, and an archived
-  lane is no longer readable. Once one scope's repository merges its slice,
-  the other scopes' slices stay on the archived lane, unreleased. Keep
-  release-bound lanes to one scope, or release the other slices from a
-  workspace before merging the pull request here. The fix — a release that
-  leaves the lane open while another scope's components are not on their
-  main yet, so the last scope to release archives it — is
-  [teambit/bit#10661](https://github.com/teambit/bit/pull/10661). Once it
-  ships in a nightly, raise the `engine` pin and this caveat goes away.
+- **Each scope releases its own slice, and the last one archives the
+  lane.** A release tags and exports the own-scope components, then it
+  archives the lane only if every other scope's components are already on
+  their main. Otherwise the lane stays open and readable, and the other
+  scopes' repositories release their slices in their own time
+  ([teambit/bit#10661](https://github.com/teambit/bit/pull/10661), bit
+  2.2.16). Below 2.2.16 the first release archived the lane and stranded
+  the other slices.
 
 ## Why the action is pinned
 

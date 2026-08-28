@@ -32,9 +32,11 @@ jobs:
         with:
           # The release reads the full history. A shallow clone stops the run.
           fetch-depth: 0
+          # Optional: see bit-sync.yml. The same secret, the same fallback.
+          token: ${{ secrets.BIT_SYNC_GH_TOKEN || secrets.GITHUB_TOKEN }}
       # The init step reads the token too. Without it, the step stops
       # with "BIT_CONFIG_ACCESS_TOKEN environment variable is not set!".
-      - uses: bit-tasks/init@v2
+      - uses: bit-tasks/init@v3
         env:
           BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
       # The pin is deliberate, because this job holds write permission.
@@ -43,4 +45,4 @@ jobs:
           # A bit.cloud service-account token. The account merges the lane.
           BIT_CONFIG_ACCESS_TOKEN: ${{ secrets.BIT_CONFIG_ACCESS_TOKEN }}
           # GitHub credentials for the commit push and the pull request comment.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BIT_SYNC_GH_TOKEN || secrets.GITHUB_TOKEN }}

@@ -18,13 +18,14 @@
    * and installs this version. Without it, the runner gets the latest stable
    * release. That release does not have `bit ci sync`.
    *
-   * 2.2.7 is the floor for the reconciler: it is the first release whose
-   * `.bitmap` heal survives a stale version in the entry (teambit/bit#10652).
-   * Below it, one stale entry halts every main sync until a human edits
-   * `.bitmap` by hand. 2.2.5 is the floor for cross-scope lanes.
+   * 2.2.16 is the floor: it is the first release whose `bit ci merge` keeps a
+   * cross-scope lane open until every scope has released its slice
+   * (teambit/bit#10661). Earlier floors: 2.2.7 for the `.bitmap` heal that
+   * survives a stale version in the entry (teambit/bit#10652), 2.2.5 for
+   * cross-scope lanes, 2.0.65 for the `bit ci sync` command itself.
    **/
   "teambit.harmony/bit": {
-    "engine": "2.2.11"
+    "engine": "2.2.18"
   },
   "teambit.dependencies/dependency-resolver": {
     "policy": {

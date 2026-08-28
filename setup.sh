@@ -48,16 +48,20 @@ else
   bit init
 fi
 
-echo "==> Step 3 of 5: install the dependencies"
-bit install
-
-echo "==> Step 4 of 5: track the component"
+echo "==> Step 3 of 5: track the component"
 if [ -f .bitmap ] && grep -q "\"$COMPONENT_ID\"" .bitmap; then
   echo "Bit tracks $COMPONENT_ID already."
 else
   bit add "$COMPONENT_DIR" --id "$COMPONENT_ID"
   echo "Bit now tracks $COMPONENT_ID."
 fi
+
+# The install runs after the add on purpose. `bit install` resolves the
+# dependencies of every tracked component and compiles it. An install that
+# runs first leaves the new component with "missing packages" and
+# "missing dists" issues in the status below.
+echo "==> Step 4 of 5: install the dependencies"
+bit install
 
 echo "==> Step 5 of 5: show the workspace status"
 bit status
