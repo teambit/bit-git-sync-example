@@ -11,6 +11,7 @@ import { formatPrice } from '@bitdev/git-sync-demo.utils.format-price';
 
 formatPrice(1999.5); // "$1,999.50"
 formatPrice(12, 'EUR', 'de-DE'); // "12,00 €"
+formatPrice(Number.NaN); // throws a RangeError
 ```
 
 This is the component that the

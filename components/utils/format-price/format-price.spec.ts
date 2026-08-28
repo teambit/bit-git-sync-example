@@ -11,3 +11,7 @@ it('formats another currency', () => {
 it('keeps two decimals for a whole number', () => {
   expect(formatPrice(3)).toEqual('$3.00');
 });
+
+it('rejects an amount that is not a finite number', () => {
+  expect(() => formatPrice(Number.NaN)).toThrow(RangeError);
+});

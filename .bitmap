@@ -12,30 +12,37 @@
     "models/cart-item": {
         "name": "models/cart-item",
         "scope": "bitdev.git-sync-demo",
-        "version": "0.0.1",
+        "version": "0692c168065fe6f7d8f9856aa9b0e216cc94aafc",
         "mainFile": "index.ts",
         "rootDir": "components/models/cart-item"
     },
     "ui/cart-summary": {
         "name": "ui/cart-summary",
         "scope": "bitdev.git-sync-demo",
-        "version": "0.0.1",
+        "version": "6421a3e9892fa8d619b7dfedce13414c4bb72422",
         "mainFile": "index.ts",
         "rootDir": "components/ui/cart-summary"
     },
     "ui/price-tag": {
         "name": "ui/price-tag",
         "scope": "bitdev.git-sync-demo",
-        "version": "0.0.1",
+        "version": "d9ef38c87fe01a1693f5b43bb35bb84363d32d05",
         "mainFile": "index.ts",
         "rootDir": "components/ui/price-tag"
     },
     "utils/format-price": {
         "name": "utils/format-price",
         "scope": "bitdev.git-sync-demo",
-        "version": "0.0.1",
+        "version": "12498fd2e619ea938672901ecb9e1bad9b811125",
         "mainFile": "index.ts",
         "rootDir": "components/utils/format-price"
     },
-    "$schema-version": "17.0.0"
+    "$schema-version": "17.0.0",
+    "_bit_lane": {
+        "id": {
+            "name": "hello",
+            "scope": "bitdev.git-sync-demo"
+        },
+        "exported": true
+    }
 }
