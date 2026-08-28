@@ -4,16 +4,23 @@ This repository is a runnable example of the `bit ci sync` integration. It
 holds the sync configuration and the GitHub Actions workflows that keep one
 bit.cloud scope and this git repository equal.
 
-This instance mirrors the `teambit.api-reference` scope: every component on
-the scope's main has a directory under `components/`, and the hourly sync
-keeps the two sides converged. A fresh fork starts smaller — `setup.sh`
-tracks one component — and grows the same way this repository did: each
-merged main-sync pull request adopts the current state of the scope into git.
+This instance mirrors the [`bitdev.git-sync-demo`](https://bit.cloud/bitdev/git-sync-demo)
+scope: every component on the scope's main has a directory under
+`components/`, and the hourly sync keeps the two sides converged. The scope
+holds four components in one dependency chain, so one edit shows the whole
+release cascade without noise:
+
+```
+utils/format-price      formats an amount of money        ← every flow edits this one
+  └─ models/cart-item   one cart line and its total
+  └─ ui/price-tag       shows one amount (React)
+       └─ ui/cart-summary   lists the lines and the total (React), uses both
+```
 
 The example carries no organization of its own. You fork it, you point it at
 your own bit.cloud scope, and you watch the four flows run in your own
-repository. The demo component that every flow edits is
-`components/utils/schema-node-label`.
+repository. `setup.sh` forks the four components into your scope, so your
+copy starts from the same shape.
 
 ## What this example proves
 
@@ -21,7 +28,7 @@ repository. The demo component that every flow edits is
 | --- | --- | --- | --- |
 | 1. Lane to branch | You export a lane on bit.cloud. | It creates a branch for the lane and opens a pull request. | A new branch and a new pull request. |
 | 2. Branch to lane | You push a commit to the lane branch. | It snaps the branch content and exports it to the lane. | The lane on bit.cloud carries your git edit. |
-| 3. Merge to release | You merge the pull request into `main`. | It merges the lane into the main scope, then it tags and exports new versions. | New component versions on bit.cloud, and an archived lane. |
+| 3. Merge to release | You merge the pull request into `main`. | It merges the lane into the main scope, then it tags and exports new versions. | Four new versions on bit.cloud — the edited component and its three dependents — and an archived lane. |
 | 4. Main drift to git | You export to the main scope. | It opens a pull request from `bit-sync/main`. | A pull request that carries the exported state. |
 
 The four flows use two workflows. `bit-sync.yml` runs flows 1, 2 and 4.
@@ -60,7 +67,7 @@ names the requirement.
 | Item | Reason |
 | --- | --- |
 | A bit.cloud organization and one scope | The example exports components to your scope. |
-| The Bit CLI | `setup.sh` calls `bit install`, `bit add` and `bit status`. |
+| The Bit CLI | `setup.sh` calls `bit init`, `bit add`, `bit install`, `bit test` and `bit status`. |
 | A GitHub repository that you own | The workflows need write permission on it. |
 | A bit.cloud token of a service account | The workflows write to your scope with it. |
 | A GitHub token with the `repo` scope | bit.cloud sends it in the webhook header. |
@@ -79,16 +86,20 @@ Install the Bit CLI with `npx @teambit/bvm install`.
 ```
 
 The script does five things. It writes your scope into `workspace.jsonc`. It
-initializes the workspace with `bit init`. It tracks the
-`utils/schema-node-label` component. It runs `bit install`. It prints the
-workspace status.
+forks the four components into your scope. It runs `bit install`. It runs
+`bit test`. It prints the workspace status.
+
+The fork is the step that matters. The committed `.bitmap` records versions
+that belong to `bitdev.git-sync-demo`, and the sources import each other by
+package name, `@bitdev/git-sync-demo.utils.format-price` and so on. Your
+scope has none of those versions, so the script rewrites the package prefix
+in every source file to `@<your-org>/<your-scope>.`, removes the `.bitmap`,
+and tracks the four directories again as new components of your scope. When
+you pass the scope that the repository mirrors already, the script changes
+nothing.
 
 The script rejects a value that is not a scope id. A scope id has two parts
 and one dot, for example `acme.shop`.
-
-The repository is configured to the `teambit.api-reference` scope. The script
-writes your scope in its place. Commit the changed `workspace.jsonc` and the
-new `.bitmap`.
 
 `bit ci sync --init` writes the same two workflow files into any workspace
 and prints the same checklist. This repository ships the files already, so
@@ -148,12 +159,19 @@ export sends an empty value.
 After you save the webhook, export a lane. Then read the delivery log. A
 correct delivery returns 204.
 
-### 4. Export one time
+### 4. Release one time, then commit
 
-Run `bit lane create hello && bit snap -m "first snap" && bit export` from
-the workspace. The scope now has content, and the `bit-sync` workflow opens
-the first branch and pull request. Flow 1 below walks through the same
-commands with more detail.
+Run `bit tag -m "first version" && bit export` from the clone. Your scope's
+main now holds the four components at `0.0.1`, and the local `.bitmap`
+records those versions. Commit that state so the sync starts converged:
+
+```sh
+git add -A && git commit -m "chore: mirror acme.shop" && git push
+```
+
+The commit carries the rewritten imports, the new `.bitmap` and the changed
+`workspace.jsonc`. Without it, the first hourly run opens a main-sync pull
+request that proposes the same versions, which is harmless but noisy.
 
 ## The demo: two workspaces, two personas
 
@@ -173,9 +191,13 @@ runs a `git` command:
 
 ```sh
 mkdir bit-ws && cd bit-ws
-bit init --default-scope teambit.api-reference
-bit import teambit.api-reference/utils/schema-node-label
+bit init --default-scope bitdev.git-sync-demo
+bit import bitdev.git-sync-demo/utils/format-price
 ```
+
+Replace `bitdev.git-sync-demo` with your scope if you forked. Importing the
+one component at the bottom of the chain is enough: the three dependents
+follow on the scope when a release auto-tags them.
 
 Each flow below names its persona. The sync is the only messenger between
 the two: an export on the bit side becomes a branch, a pull request or a
@@ -197,8 +219,9 @@ the bit side.
 In the bit workspace:
 
 1. Create a lane: `bit lane create hello`.
-2. Change the imported `schema-node-label` component.
-3. Snap the change: `bit snap -m "change the label format"`.
+2. Change the imported `format-price` component, for example the default
+   currency in `format-price.ts`, and its test.
+3. Snap the change: `bit snap -m "change the default currency"`.
 4. Export the lane: `bit export`.
 
 **Expected result:** the webhook starts the `bit-sync` workflow. The run
@@ -215,7 +238,8 @@ In the git clone:
 
 1. Fetch the new branch: `git fetch origin`.
 2. Check it out: `git checkout hello`.
-3. Change the label format in `components/utils/schema-node-label/schema-node-label.ts` again.
+3. Change `components/utils/format-price/format-price.ts` again, for
+   example the default locale.
 4. Commit the change and push it.
 
 **Expected result:** the push starts the `bit-sync` workflow. The run snaps the
@@ -236,17 +260,19 @@ On the pull request page:
 3. Merge the pull request into `main`.
 
 **Expected result:** the merge starts the `bit-release` workflow. The run
-merges the lane into the main scope. The run tags and exports new component
-versions — the changed components and their auto-tagged dependents. The
-remote lane becomes archived, and the next reconcile deletes the lane
-branch. The version numbers therefore describe merged state only.
+merges the lane into the main scope. The run tags and exports four new
+versions: `utils/format-price`, which you changed, and its three
+auto-tagged dependents `models/cart-item`, `ui/price-tag` and
+`ui/cart-summary`. The remote lane becomes archived, and the next reconcile
+deletes the lane branch. The version numbers therefore describe merged
+state only.
 
 ### Flow 4: main-scope drift reaches the default branch
 
 In the bit workspace:
 
 1. Switch to main: `bit switch main`.
-2. Snap a change: `bit snap -m "change the label format on main"`.
+2. Snap a change: `bit snap -m "change the default currency on main"`.
 3. Export the change: `bit export`.
 
 **Expected result:** the webhook sends an empty `laneId`, so the run reconciles
@@ -297,8 +323,9 @@ No key decides who approves a change, because people merge pull requests.
 
 A lane is hosted on one scope, but its components can belong to many. This
 repository mirrors one scope, so it reconciles a lane over its own slice
-only. Verified on 2026-08-26 with a lane on `teambit.api-reference` that
-carried one own-scope component and one `luvk.test` component.
+only. Verified on 2026-08-26, on the scope this repository mirrored before
+`bitdev.git-sync-demo`, with a lane that carried one own-scope component and
+one component of another scope.
 
 | Flow | What happens on a cross-scope lane |
 | --- | --- |
@@ -383,9 +410,9 @@ pull requests under **Settings > Actions > General**.
 | Path | Purpose |
 | --- | --- |
 | `workspace.jsonc` | The workspace, the engine pin and the sync configuration. |
-| `components/` | The mirrored components of the scope. |
-| `components/utils/schema-node-label/` | The demo component that the flows edit. |
-| `setup.sh` | Writes your scope, installs, tracks the demo component. |
+| `components/` | The four mirrored components of the scope. |
+| `components/utils/format-price/` | The component that the flows edit. Its three dependents follow. |
+| `setup.sh` | Writes your scope, forks the four components into it, installs, tests. |
 | `.github/workflows/bit-sync.yml` | Flows 1, 2 and 4. |
 | `.github/workflows/bit-release.yml` | Flow 3. |
 | `.github/workflows/bit-adopt-pr.yml` | The optional adopt workflow. |

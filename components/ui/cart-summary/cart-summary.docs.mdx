@@ -1,0 +1,20 @@
+---
+labels: ['react', 'cart', 'ui']
+description: 'Lists the lines of a cart and shows the total.'
+---
+
+import { createCartItem } from '@bitdev/git-sync-demo.models.cart-item';
+import { CartSummary } from './cart-summary.js';
+
+`CartSummary` lists the lines of a cart and shows the total. It is the top
+of the dependency chain in this scope: it uses `models/cart-item` for the
+line totals and `ui/price-tag` for every amount.
+
+```js live
+<CartSummary
+  items={[
+    createCartItem({ sku: 'MUG-01', name: 'Mug', unitPrice: 12.5, quantity: 2 }),
+    createCartItem({ sku: 'TEE-01', name: 'T-shirt', unitPrice: 20 }),
+  ]}
+/>
+```

@@ -1,0 +1,15 @@
+---
+labels: ['cart', 'model', 'entity']
+description: 'One line of a shopping cart, and its total.'
+---
+
+`CartItem` is one line of a shopping cart. `cartItemTotal` multiplies the
+unit price by the quantity, and `formatCartItemTotal` formats that total
+with `utils/format-price`.
+
+```ts
+import { createCartItem, formatCartItemTotal } from '@bitdev/git-sync-demo.models.cart-item';
+
+const mug = createCartItem({ sku: 'MUG-01', name: 'Mug', unitPrice: 12.5, quantity: 2 });
+formatCartItemTotal(mug); // "$25.00"
+```

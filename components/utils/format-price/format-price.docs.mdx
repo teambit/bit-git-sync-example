@@ -1,0 +1,18 @@
+---
+labels: ['format', 'price', 'currency']
+description: 'Formats an amount of money for display.'
+---
+
+`formatPrice` turns a number into a currency string. The currency and the
+locale are optional; the default is US dollars in the `en-US` locale.
+
+```ts
+import { formatPrice } from '@bitdev/git-sync-demo.utils.format-price';
+
+formatPrice(1999.5); // "$1,999.50"
+formatPrice(12, 'EUR', 'de-DE'); // "12,00 €"
+```
+
+This is the component that the
+[bit-git-sync example](https://github.com/teambit/bit-git-sync-example)
+edits in every flow. A change here auto-tags its three dependents.

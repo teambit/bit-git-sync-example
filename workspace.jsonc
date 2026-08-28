@@ -8,13 +8,15 @@
     "icon": "https://static.bit.dev/brands/bit-logo-min.png",
     "defaultDirectory": "components/{name}",
     /**
-     * `setup.sh` replaces this placeholder with the scope that you pass to it.
-     * Example: ./setup.sh acme.shop
+     * The scope that this repository mirrors. `setup.sh` replaces it with
+     * the scope that you pass to it. Example: ./setup.sh acme.shop
      **/
-    "defaultScope": "teambit.api-reference"
+    "defaultScope": "bitdev.git-sync-demo",
+    "resolveAspectsFromNodeModules": true,
+    "resolveEnvsFromRoots": true
   },
   /**
-   * the bit version that this workspace requires. `bit-tasks/init` reads it
+   * The bit version that this workspace requires. `bit-tasks/init` reads it
    * and installs this version. Without it, the runner gets the latest stable
    * release. That release does not have `bit ci sync`.
    *
@@ -28,6 +30,7 @@
     "engine": "2.2.18"
   },
   "teambit.dependencies/dependency-resolver": {
+    "rootComponents": true,
     "policy": {
       "dependencies": {},
       "peerDependencies": {}
@@ -37,11 +40,6 @@
    * The sync configuration that the `bit ci sync` command and the
    * bit-git-sync action both read. The README explains each key.
    **/
-  "teambit.component/issues": {
-    "ignoreIssues": [
-      "CircularDependencies"
-    ]
-  },
   "teambit.git/ci": {
     "sync": {
       "lanes": [
