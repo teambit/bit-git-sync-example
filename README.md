@@ -267,6 +267,11 @@ auto-tagged dependents `models/cart-item`, `ui/price-tag` and
 deletes the lane branch. The version numbers therefore describe merged
 state only.
 
+If you merge within a minute or two of a push to the lane branch, the Ripple
+job for that last lane snap can still be running when the release archives
+the lane. That job then ends as a failure on bit.cloud. The release job is
+the one that matters, and it builds main.
+
 ### Flow 4: main-scope drift reaches the default branch
 
 In the bit workspace:
