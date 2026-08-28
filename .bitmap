@@ -12,28 +12,28 @@
     "models/cart-item": {
         "name": "models/cart-item",
         "scope": "bitdev.git-sync-demo",
-        "version": "0.0.2",
+        "version": "85dc0f0fe69ba7140a2e7793b466e118c66cd4d9",
         "mainFile": "index.ts",
         "rootDir": "components/models/cart-item"
     },
     "ui/cart-summary": {
         "name": "ui/cart-summary",
         "scope": "bitdev.git-sync-demo",
-        "version": "0.0.2",
+        "version": "d774c056eb960c77748808e8c20b91d9a6b660be",
         "mainFile": "index.ts",
         "rootDir": "components/ui/cart-summary"
     },
     "ui/price-tag": {
         "name": "ui/price-tag",
         "scope": "bitdev.git-sync-demo",
-        "version": "0.0.2",
+        "version": "6b102f53a09aca3cfbf0de235b06fdc698e69884",
         "mainFile": "index.ts",
         "rootDir": "components/ui/price-tag"
     },
     "utils/format-price": {
         "name": "utils/format-price",
         "scope": "bitdev.git-sync-demo",
-        "version": "6633c02bba8b217f8c9c7fbfa3c405e3f7bb8933",
+        "version": "d6935a57055f73e6ea835befa2f5a07fd91e7a93",
         "mainFile": "index.ts",
         "rootDir": "components/utils/format-price"
     },
