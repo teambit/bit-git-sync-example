@@ -392,8 +392,11 @@ One cosmetic effect follows from the trigger. The sync opens its own pull
 requests as `github-actions[bot]`, and a repository can require approval for
 workflow runs on bot pull requests. Such a run waits as **action required**
 on the Actions tab, and approval would only reach the skip condition above.
-You can approve it, ignore it, or turn off the approval requirement for bot
-pull requests under **Settings > Actions > General**.
+When the pull request merges before anyone approves, the same run turns
+into a **failure** whose page reads "required approval but was not approved
+before it expired". No job ran in either case. You can approve it, ignore
+it, or turn off the approval requirement for bot pull requests under
+**Settings > Actions > General**.
 
 ## Troubleshooting
 
@@ -402,6 +405,7 @@ pull requests under **Settings > Actions > General**.
 | No run starts after an export. | The webhook delivery failed. | Read the delivery log on bit.cloud. A 401 means the `Authorization` header is wrong or absent. Check the header, then send a test delivery. A 404 means the URL names the wrong repository. |
 | A run starts, but no pull request appears. | The repository forbids the write. | Turn on **Allow GitHub Actions to create and approve pull requests**. Confirm that the workflow declares `pull-requests: write`. |
 | The run halts, and the pull request gets the label `bit-sync-conflict`. | Git and the lane changed the same line. | Read the comment on the pull request. Resolve the conflict on the branch, push the result, then remove the label. The sync stays paused for that lane while the label is present. |
+| The run halts on a lane with `scope <your-scope> not found`, right after `Exporting N components`. | The snap succeeded and the export was refused: the account behind `BIT_CONFIG_ACCESS_TOKEN` has no write permission on the scope. bit.cloud answers a forbidden write with "not found". Reads work on a public scope, so flow 1 passes and flow 2 halts. | Give the account write permission on the scope, or set the secret to a token of an account that has it. Then remove the `bit-sync-conflict` label that the halt left on the pull request, and run the sync again. |
 | The run halts with a shallow-clone message. | `actions/checkout` fetched one commit. | Keep `fetch-depth: 0` in the checkout step. The reconciler reads the full history, so a shallow clone stops it before any write. |
 | The run skips a lane as "nothing to mirror". | Every component on the lane belongs to another scope. | This is correct behavior, not an error. A lane mirrors only the components of this repository's scope; foreign components stay on the lane as package dependencies, and only their own scopes' repositories can mirror their sources. A lane with at least one own-scope component syncs that slice. |
 
