@@ -33,7 +33,7 @@
     "utils/format-price": {
         "name": "utils/format-price",
         "scope": "bitdev.git-sync-demo",
-        "version": "0.0.2",
+        "version": "89227d196122fbfdabac92b14d4d3e762b5b41a3",
         "mainFile": "index.ts",
         "rootDir": "components/utils/format-price"
     },
