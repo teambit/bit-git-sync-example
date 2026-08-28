@@ -33,9 +33,16 @@
     "utils/format-price": {
         "name": "utils/format-price",
         "scope": "bitdev.git-sync-demo",
-        "version": "89227d196122fbfdabac92b14d4d3e762b5b41a3",
+        "version": "6633c02bba8b217f8c9c7fbfa3c405e3f7bb8933",
         "mainFile": "index.ts",
         "rootDir": "components/utils/format-price"
     },
-    "$schema-version": "17.0.0"
+    "$schema-version": "17.0.0",
+    "_bit_lane": {
+        "id": {
+            "name": "token-check",
+            "scope": "bitdev.git-sync-demo"
+        },
+        "exported": true
+    }
 }
