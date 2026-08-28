@@ -33,9 +33,16 @@
     "utils/format-price": {
         "name": "utils/format-price",
         "scope": "bitdev.git-sync-demo",
-        "version": "0.0.1",
+        "version": "aaeac648617dbd933125be60ee6006c6673dfa91",
         "mainFile": "index.ts",
         "rootDir": "components/utils/format-price"
     },
-    "$schema-version": "17.0.0"
+    "$schema-version": "17.0.0",
+    "_bit_lane": {
+        "id": {
+            "name": "hello",
+            "scope": "bitdev.git-sync-demo"
+        },
+        "exported": true
+    }
 }

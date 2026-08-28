@@ -9,5 +9,8 @@
  * ui/cart-summary.
  */
 export function formatPrice(amount: number, currency = 'USD', locale = 'en-US'): string {
+  if (!Number.isFinite(amount)) {
+    throw new RangeError(`formatPrice: the amount must be a finite number, got ${amount}`);
+  }
   return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(amount);
 }
