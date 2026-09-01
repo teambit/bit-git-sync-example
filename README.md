@@ -1,5 +1,11 @@
 # bit-git-sync example
 
+> **⚠️ Archived.** This repository is superseded by
+> [**teambit/acme-modular-store**](https://github.com/teambit/acme-modular-store) —
+> the maintained, runnable reference for `bit ci sync`, including the
+> GitHub-App + webhook-relay setup that replaced the personal-token webhook
+> described below. Start there.
+
 This repository is a runnable example of the `bit ci sync` integration. It
 holds the sync configuration and the GitHub Actions workflows that keep one
 bit.cloud scope and this git repository equal.
